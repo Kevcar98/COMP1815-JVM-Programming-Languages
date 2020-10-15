@@ -2,7 +2,6 @@ import javax.swing.*;
 
 public class TeamCreator {
 
-    private JButton backToMainMenuButton;
     public JPanel TeamCPanel;
 
     public static void main(String[] args){
