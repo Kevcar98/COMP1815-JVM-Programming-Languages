@@ -9,7 +9,7 @@ public class HomePage {
     private JButton createTeamButton;
     private JButton createProjectButton;
     private JButton viewProjectsButton;
-    private JPanel HomePanel;
+    public JPanel HomePanel;
 
     public static void main(String[] args){
         JFrame HomePF = new JFrame("HomePage");
@@ -29,6 +29,10 @@ public class HomePage {
                 CreateTF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 CreateTF.pack();
                 CreateTF.setVisible(true);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
 
 
             }
@@ -41,6 +45,10 @@ public class HomePage {
                 CreatePF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 CreatePF.pack();
                 CreatePF.setVisible(true);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
 
             }
         });
@@ -52,6 +60,10 @@ public class HomePage {
                 ViewTF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ViewTF.pack();
                 ViewTF.setVisible(true);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
 
             }
         });
@@ -63,6 +75,11 @@ public class HomePage {
                 ViewPF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ViewPF.pack();
                 ViewPF.setVisible(true);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
+
 
             }
         });
