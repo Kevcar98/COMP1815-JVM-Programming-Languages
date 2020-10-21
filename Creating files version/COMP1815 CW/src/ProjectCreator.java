@@ -9,7 +9,7 @@ public class ProjectCreator {
     private JTextField AssignedTeamsF;
     private JButton createProjectButton;
     private JTextField ProjectIDF;
-    private JTextField CommisionerF;
+    private JTextField CommissionerF;
     private JTextField ProjectManagerF;
     private JTextField NumOfTasksF;
     private JLabel ResultF;
@@ -18,6 +18,8 @@ public class ProjectCreator {
     private Project project;
 
     public ProjectCreator() {
+        handler = new ProjectHandler(); // instantiate here (not static)
+
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,7 +38,7 @@ public class ProjectCreator {
         createProjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                project = handler.createProject(ProjectIDF.getText(), CommisionerF.getText(), ProjectManagerF.getText(), NumOfTasksF.getText(), AssignedTeamsF.getText());
+                project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), NumOfTasksF.getText(), AssignedTeamsF.getText());
                 ResultF.setText(project.toString());
 
 
