@@ -13,89 +13,85 @@ public class HomePage {
     private JButton createTaskButton;
     private JButton viewTasksButton;
 
-
-    public static void main(String[] args){
-        JFrame HomePF = new JFrame("HomePage");
+    public static void main(String[] args) {
+        JFrame HomePF = new JFrame("Home Page");
         HomePF.setContentPane(new HomePage().HomePanel);
         HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         HomePF.pack();
         HomePF.setVisible(true);
-
-
-
+        HomePF.setLocationRelativeTo(null);
     }
 
     public HomePage() {
         createTeamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame CreateTmF = new JFrame("TeamCreator");
+                JFrame CreateTmF = new JFrame("Team Creator");
                 CreateTmF.setContentPane(new TeamCreator().TeamCPanel);
                 CreateTmF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 CreateTmF.pack();
                 CreateTmF.setVisible(true);
+                CreateTmF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
-
             }
         });
         createProjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame CreatePrF = new JFrame("ProjectCreator");
+                JFrame CreatePrF = new JFrame("Project Creator");
                 CreatePrF.setContentPane(new ProjectCreator().ProjectCPanel);
                 CreatePrF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 CreatePrF.pack();
                 CreatePrF.setVisible(true);
+                CreatePrF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
         viewTeamsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame ViewTmF = new JFrame("TeamViewer");
+                JFrame ViewTmF = new JFrame("Team Viewer");
                 ViewTmF.setContentPane(new TeamViewer().TeamVPanel);
                 ViewTmF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ViewTmF.pack();
                 ViewTmF.setVisible(true);
+                ViewTmF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
         viewProjectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame ViewPrF = new JFrame("ProjectViewer");
-                ViewPrF.setContentPane(new ProjectViewer().TeamVPanel);
+                JFrame ViewPrF = new JFrame("Project Viewer");
+                ViewPrF.setContentPane(new ProjectViewer().ProjectVPanel);
                 ViewPrF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ViewPrF.pack();
                 ViewPrF.setVisible(true);
+                ViewPrF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
-
             }
         });
         createTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame CreateTsF = new JFrame("TaskCreator");
+                JFrame CreateTsF = new JFrame("Task Creator");
                 CreateTsF.setContentPane(new TaskCreator().TaskCPanel);
                 CreateTsF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 CreateTsF.pack();
                 CreateTsF.setVisible(true);
+                CreateTsF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
@@ -106,11 +102,12 @@ public class HomePage {
         viewTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame CreateTsF = new JFrame("TasksViewer");
-                CreateTsF.setContentPane(new TaskViewer().TaskVPanel);
-                CreateTsF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                CreateTsF.pack();
-                CreateTsF.setVisible(true);
+                JFrame ViewTsF = new JFrame("Tasks Viewer");
+                ViewTsF.setContentPane(new TaskViewer().TaskVPanel);
+                ViewTsF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ViewTsF.pack();
+                ViewTsF.setVisible(true);
+                ViewTsF.setLocationRelativeTo(null);
                 // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);

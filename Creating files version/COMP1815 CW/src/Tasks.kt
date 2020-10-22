@@ -1,6 +1,6 @@
 import java.util.*
 
-data class Tasks(var ProjectID: Int, var Commissioner: String="", var ProjectMng: String="", var AssignedTasksID: Int, var AssignedTeamsID: Int){
+data class Tasks(var ProjectID: Int, var Commissioner: String = "", var ProjectMng: String = "", var AssignedTasksID: Int, var AssignedTeamsID: Int) {
 
 }
 /*
