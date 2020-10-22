@@ -3,21 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TeamCreator {
-
-    public JPanel TeamCPanel;
+public class TaskViewer {
     private JButton backToMainMenuButton;
-    private JTextField TeamIDF;
-    private JTextField TeamLeaderF;
-    private JTextField TeamLocationF;
-    private JTextField TeamMembersF;
+    public JPanel TaskVPanel;
 
-    public static void main(String[] args){
-    }
-
-
-
-    public TeamCreator() {
+    public TaskViewer() {
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,7 +20,6 @@ public class TeamCreator {
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
     }

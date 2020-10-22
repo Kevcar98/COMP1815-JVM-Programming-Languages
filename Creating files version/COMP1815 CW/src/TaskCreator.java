@@ -3,21 +3,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TeamCreator {
-
-    public JPanel TeamCPanel;
+public class TaskCreator {
     private JButton backToMainMenuButton;
-    private JTextField TeamIDF;
-    private JTextField TeamLeaderF;
-    private JTextField TeamLocationF;
-    private JTextField TeamMembersF;
+    private JTextField ProjectIDF;
+    private JTextField AssignedTeamsF;
+    private JTextField ProjectManagerF;
+    private JTextField CommisionerF;
+    private JTextField TaskIDF;
+    public JPanel TaskCPanel;
+    private JButton createTaskButton;
+    private JLabel CommissionerF;
 
-    public static void main(String[] args){
-    }
-
-
-
-    public TeamCreator() {
+    public TaskCreator() {
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,7 +27,6 @@ public class TeamCreator {
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
     }
