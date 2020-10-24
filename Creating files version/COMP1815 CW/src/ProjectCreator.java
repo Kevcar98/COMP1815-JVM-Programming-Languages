@@ -53,6 +53,18 @@ public class ProjectCreator {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(project.size());
                 handler.save(project);
+                JFrame HomePF = new JFrame("Home Page");
+                HomePF.setContentPane(new HomePage().HomePanel);
+                HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                HomePF.pack();
+                HomePF.setVisible(true);
+                HomePF.setLocationRelativeTo(null);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
+                JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
+
             }
         });
     }

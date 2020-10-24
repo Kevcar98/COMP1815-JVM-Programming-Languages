@@ -1,4 +1,6 @@
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 
 /*
 fun main(args: Array<String>) {
@@ -27,26 +29,51 @@ abstract class CreateFile {
 
     abstract infix fun save(data: String)
 }
-
 class FileProject() : CreateFile() {
     override fun save(data: String) {
-        println("Saved $data to a file")
-        File(fileNameP).writeText(data)
+        val path = System.getProperty("user.dir") + "\\ $fileNameP"
+        try {
+            val fw = FileWriter(path, true)
+            fw.write(data)
+            fw.close()
+            println("Saved $data to an existing file")
+        } catch (e: IOException) {
+            File(fileNameP).writeText(data)
+            println("Saved $data to a new file")
+        }
+
+
     }
 }
 
 
 class FileTask() : CreateFile() {
     override fun save(data: String) {
-        println("Saved $data to a file")
-        File(fileNameTk).writeText(data)
+        val path = System.getProperty("user.dir") + "\\ $fileNameTk"
+        try {
+            val fw = FileWriter(path, true)
+            fw.write(data)
+            fw.close()
+            println("Saved $data to an existing file")
+        } catch (e: IOException) {
+            File(fileNameTk).writeText(data)
+            println("Saved $data to a new file")
+        }
     }
 }
 
 
 class FileTeam() : CreateFile() {
     override fun save(data: String) {
-        println("Saved $data to a file")
-        File(fileNameTm).writeText(data)
+        val path = System.getProperty("user.dir") + "\\ $fileNameTm"
+        try {
+            val fw = FileWriter(path, true)
+            fw.write(data)
+            fw.close()
+            println("Saved $data to an existing file")
+        } catch (e: IOException) {
+            File(fileNameTm).writeText(data)
+            println("Saved $data to a new file")
+        }
     }
 }
