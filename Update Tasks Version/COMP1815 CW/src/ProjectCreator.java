@@ -16,7 +16,7 @@ public class ProjectCreator {
     private JLabel ResultF;
     private JButton saveProjectButton;
     private ProjectHandler handler;
-    static List<Project> project;
+    private List<Project> project;
 
     public ProjectCreator() {
         handler = new ProjectHandler();
