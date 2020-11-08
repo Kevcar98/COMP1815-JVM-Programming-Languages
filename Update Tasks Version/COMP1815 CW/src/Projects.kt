@@ -36,12 +36,8 @@ class ProjectHandler() {
             val fr = FileReader("Projects.txt")
             val br = BufferedReader(fr)
             var fileLines: String
-            while (br.ready()) { // ALSO CHECK IF THIS STILL ENTERS LOOP WHEN NULL/EMPTY, IF SO, WTE, IF NOT, CHANGE IT & THE RETURN VALUE BELOW
+            while (br.ready()) {
                 fileLines = br.readLine()
-                if (fileLines.isEmpty()) {
-                    println("Warning: File is Empty")
-                    return null
-                }
                 fileLines = fileLines.replace("Project(", "") // Formatting the read input from Projects.txt to parse data into Arrays
                 fileLines = fileLines.replace("ProjectID=", "")
                 fileLines = fileLines.replace(" Commissioner=", "")
