@@ -68,7 +68,7 @@
           <text value="Project ID"/>
         </properties>
       </component>
-      <component id="ca9ac" class="javax.swing.JLabel" binding="CommissionerL">
+      <component id="ca9ac" class="javax.swing.JLabel">
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -126,7 +126,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="3f76a" class="javax.swing.JLabel" binding="DurationL">
+      <component id="3f76a" class="javax.swing.JLabel">
         <constraints>
           <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
