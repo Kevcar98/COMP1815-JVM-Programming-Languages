@@ -43,9 +43,9 @@ class TaskHandler() {
             var fileLines: String
             while (br.ready()) {
                 fileLines = br.readLine()
-                fileLines = fileLines.replace("Tasks(", "") // Formatting the read input from Projects.txt to parse data into Arrays
+                fileLines = fileLines.replace("Tasks(", "") // Formatting the read input from Tasks.txt to parse data into Arrays
                 fileLines = fileLines.replace("TaskID=", "")
-                fileLines = fileLines.replace("ProjectID=", "")
+                fileLines = fileLines.replace(" ProjectID=", "")
                 fileLines = fileLines.replace(" Commissioner=", "")
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" Duration=", "")
