@@ -20,7 +20,7 @@ public class ProjectCreator {
     private ProjectHandler handler;
     private List<Project> project;
 
-    boolean validationCheck(String s, boolean numberOnly) {
+    public static boolean validationCheck(String s, boolean numberOnly) {
         Pattern alpha = Pattern.compile("[^A-Za-z0-9 ]");
         Pattern numbers = Pattern.compile("[^0-9]");
         Matcher alphaMatcher = alpha.matcher(s);
@@ -64,7 +64,8 @@ public class ProjectCreator {
                     project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), NumOfTasksF.getText(), AssignedTeamsF.getText());
                     ResultF.setText(project.get(project.size() - 1).toString()); // displays last item in list
                 } else {
-                    ResultF.setText("Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
+                    JOptionPane.showMessageDialog(ProjectCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
+                    ResultF.setText("Project details appear here:");
                 }
                 // Resizes and centers current window by re-packing it
                 JComponent comp = (JComponent) e.getSource();
