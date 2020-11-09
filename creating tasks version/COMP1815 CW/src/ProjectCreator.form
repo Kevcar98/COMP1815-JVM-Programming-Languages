@@ -32,7 +32,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="d850b" class="javax.swing.JTextField" binding="CommissionerF">
         <constraints>
@@ -118,7 +120,7 @@
           <text value="Project details appear here:"/>
         </properties>
       </component>
-      <component id="8db93" class="javax.swing.JButton" binding="saveProjectButton">
+      <component id="8db93" class="javax.swing.JButton" binding="createProjectButton">
         <constraints>
           <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -126,7 +128,7 @@
           <text value="Save Project"/>
         </properties>
       </component>
-      <component id="6f677" class="javax.swing.JButton" binding="createProjectButton" default-binding="true">
+      <component id="6f677" class="javax.swing.JButton" binding="verifyProjectButton" default-binding="true">
         <constraints>
           <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
