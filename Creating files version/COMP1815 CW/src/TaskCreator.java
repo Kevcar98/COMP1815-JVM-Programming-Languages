@@ -61,7 +61,6 @@ public class TaskCreator {
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();
                 } else {
-                    //ResultF.setText("Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                 }
             }
