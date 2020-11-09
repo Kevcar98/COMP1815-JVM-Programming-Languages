@@ -10,10 +10,18 @@ public class ProjectViewer {
     public JPanel ProjectVPanel;
     private JButton backToMainMenuButton;
     public JList projectJList;
+    private ProjectHandler handler;
+    private List<Project> project;
 
     public ProjectViewer() {
-        if(ProjectCreator.project != null) {
-            projectJList.setListData(ProjectCreator.project.toArray(new Project[0])); // converts list to new array for JList
+        handler = new ProjectHandler();
+        project = handler.loadProjects();
+        if(project != null) {
+            projectJList.setListData(project.toArray(new Project[0])); // converts list to new array for JList
+        } else if(project == null) {
+            System.out.println("ERROR: Project is null");
+        } else {
+            System.out.println("ERROR: Project is of unknown status");
         }
 
         backToMainMenuButton.addActionListener(new ActionListener() {

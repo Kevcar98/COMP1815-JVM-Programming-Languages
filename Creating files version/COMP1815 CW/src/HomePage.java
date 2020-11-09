@@ -12,6 +12,7 @@ public class HomePage {
     public JPanel HomePanel;
     private JButton createTaskButton;
     private JButton viewTasksButton;
+    private JButton updateTaskProgressButton;
 
     public static void main(String[] args) {
         JFrame HomePF = new JFrame("Home Page");
@@ -112,6 +113,22 @@ public class HomePage {
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
+            }
+        });
+        updateTaskProgressButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame TaskUp = new JFrame("Update Tasks");
+                TaskUp.setContentPane(new UpdateTask().UpdateTPanel);
+                TaskUp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                TaskUp.pack();
+                TaskUp.setVisible(true);
+                TaskUp.setLocationRelativeTo(null);
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
+
             }
         });
     }
