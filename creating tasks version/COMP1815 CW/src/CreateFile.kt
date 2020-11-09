@@ -52,7 +52,7 @@ class FileProject() : CreateFile() {
 
 class FileTask() : CreateFile() {
     override fun save(data: String) {
-        val path = System.getProperty("user.dir") + "\\ $fileNameTk"
+        val path = System.getProperty("user.dir") + "\\$fileNameTk"
         try {
             val fw = FileWriter(path, true)
             fw.write(data)
@@ -70,7 +70,7 @@ class FileTask() : CreateFile() {
 
 class FileTeam() : CreateFile() {
     override fun save(data: String) {
-        val path = System.getProperty("user.dir") + "\\ $fileNameTm"
+        val path = System.getProperty("user.dir") + "\\$fileNameTm"
         try {
             val fw = FileWriter(path, true)
             fw.write(data)
