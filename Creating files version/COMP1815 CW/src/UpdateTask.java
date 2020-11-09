@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class UpdateTask {
     private JButton backToMainMenuButton;
     public JPanel UpdateTPanel;
     private JTextField TaskIDF;
     private JTextField ProgressF;
+    private JButton updateButton;
+    private TaskHandler handler;
+    private List<Tasks> task;
 
     public UpdateTask() {
         backToMainMenuButton.addActionListener(new ActionListener() {
@@ -24,6 +28,13 @@ public class UpdateTask {
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
 
+            }
+        });
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                task = handler.loadTasks();
             }
         });
     }
