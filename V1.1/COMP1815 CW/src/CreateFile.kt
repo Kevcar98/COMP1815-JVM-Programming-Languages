@@ -27,7 +27,6 @@ abstract class CreateFile {
         fun createFileProject() = FileProject()
         fun createFileTask() = FileTask()
         fun createFileTeam() = FileTeam()
-        fun DeleteTFile() = DeleteFile
     }
 
     abstract infix fun save(data: String)
@@ -49,21 +48,6 @@ class FileProject() : CreateFile() {
         }
     }
 }
-
-//////////////////
-
-object DeleteFile {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val tFile = File("Tasks.txt")
-        if (tFile.delete()) {
-            println("Deleted the file: " + tFile.name)
-        } else {
-            println("Failed to delete the file.")
-        }
-    }
-}
-/////////////////
 
 
 class FileTask() : CreateFile() {

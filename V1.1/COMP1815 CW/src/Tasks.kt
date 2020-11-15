@@ -1,7 +1,5 @@
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.IOException
+import java.io.*
+
 
 data class Tasks(
     var TaskID: Int = 0,
@@ -70,6 +68,7 @@ class TaskHandler() {
                 }
                 for (i in parts.indices) {
                     //allParts[i][1]= allParts[i][1].strip()
+
                     createTask(
                         allParts[i][0],
                         allParts[i][1],
@@ -112,9 +111,9 @@ class TaskHandler() {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Task, input their respective Task Parameters into Array via split()
                 }
 
-
-
                 allParts[ID.toInt()][6]= Progress
+
+                /*
                 println(allParts[ID.toInt()][0])
                 println(allParts[ID.toInt()][1])
                 println(allParts[ID.toInt()][2])
@@ -122,10 +121,12 @@ class TaskHandler() {
                 println(allParts[ID.toInt()][4])
                 println(allParts[ID.toInt()][5])
                 println(allParts[ID.toInt()][6])
+                */
 
-                CreateFile.DeleteTFile()
+                val pw = PrintWriter("Tasks.txt")
+                pw.close()
+
                 for (i in parts.indices) {
-                    //allParts[i][1]= allParts[i][1].strip()
                     createTask(
                         allParts[i][0],
                         allParts[i][1],
@@ -136,17 +137,18 @@ class TaskHandler() {
                         allParts[i][6]
                     ) // Creates an object of type Tasks for each, using Parameter data
                     save(task)
+                    task.clear()
+
                 }
-
-
-
             }
             return task // Returns the list "task" as the createTask function already added the Tasks to it
         } catch (e: FileNotFoundException) {
             println("Error: File Not Found")
         } catch (e: IOException) {
             println("Error: IO Exception")
+        }catch (e: StringIndexOutOfBoundsException) {
         }
+
 
 
 

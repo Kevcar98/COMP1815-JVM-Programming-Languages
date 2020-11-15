@@ -38,10 +38,6 @@ public class UpdateTask {
                 String id=TaskIDF.getText();
                 String progress = ProgressF.getText();
                 task = handler.updateTasks( id, progress);
-                System.out.print(task);
-                handler.save(task);
-
-
 
                 JFrame HomePF = new JFrame("Home Page");
                 HomePF.setContentPane(new HomePage().HomePanel);
