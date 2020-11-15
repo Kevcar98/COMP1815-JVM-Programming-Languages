@@ -2,7 +2,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.BufferedReader
 import java.io.FileReader
-import java.io.File
+
 
 data class Project(
         var ProjectID: Int = 0,
@@ -10,7 +10,6 @@ data class Project(
         var ProjectMng: String = "Name",
         var NumOfAssignedTasks: Int = 0,
         var AssignedTeamsID: Int = 0) {
-    //
 }
 
 class ProjectHandler() {
@@ -46,7 +45,7 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) {""} } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }

@@ -97,7 +97,6 @@ public class HomePage {
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
         viewTasksButton.addActionListener(new ActionListener() {
@@ -128,7 +127,6 @@ public class HomePage {
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
     }

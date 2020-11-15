@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TeamCreator {
 
+public class TeamCreator {
     public JPanel TeamCPanel;
     private JButton backToMainMenuButton;
     private JTextField TeamIDF;
@@ -22,7 +22,7 @@ public class TeamCreator {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();

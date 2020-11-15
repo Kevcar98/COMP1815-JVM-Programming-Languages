@@ -15,18 +15,13 @@ public class TaskViewer {
     public TaskViewer() {
         handler = new TaskHandler();
         task = handler.loadTasks();
-        if(task != null) {
+        if (task != null) {
             taskJList.setListData(task.toArray(new Tasks[0])); // converts list to new array for JList
-        } else if(task == null) {
+        } else if (task == null) {
             System.out.println("ERROR: Task is null");
         } else {
             System.out.println("ERROR: Task is of unknown status");
         }
-
-
-
-
-
 
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -37,7 +32,7 @@ public class TaskViewer {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();

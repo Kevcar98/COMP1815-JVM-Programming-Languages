@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class ProjectCreator {
     public JPanel ProjectCPanel;
     private JButton backToMainMenuButton;
@@ -46,7 +47,7 @@ public class ProjectCreator {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -55,11 +56,11 @@ public class ProjectCreator {
         verifyProjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if( validationCheck(ProjectIDF.getText(), true) &&
-                    validationCheck(CommissionerF.getText(), false) &&
-                    validationCheck(ProjectManagerF.getText(), false) &&
-                    validationCheck(NumOfTasksF.getText(), true) &&
-                    validationCheck(AssignedTeamsF.getText(), true)
+                if (validationCheck(ProjectIDF.getText(), true) &&
+                        validationCheck(CommissionerF.getText(), false) &&
+                        validationCheck(ProjectManagerF.getText(), false) &&
+                        validationCheck(NumOfTasksF.getText(), true) &&
+                        validationCheck(AssignedTeamsF.getText(), true)
                 ) {
                     project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), NumOfTasksF.getText(), AssignedTeamsF.getText());
                     ResultF.setText(project.get(project.size() - 1).toString()); // displays last item in list
@@ -85,12 +86,11 @@ public class ProjectCreator {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
                 JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
-
             }
         });
     }
