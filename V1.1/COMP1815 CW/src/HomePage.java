@@ -33,7 +33,7 @@ public class HomePage {
                 CreateTmF.pack();
                 CreateTmF.setVisible(true);
                 CreateTmF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -48,7 +48,7 @@ public class HomePage {
                 CreatePrF.pack();
                 CreatePrF.setVisible(true);
                 CreatePrF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -63,7 +63,7 @@ public class HomePage {
                 ViewTmF.pack();
                 ViewTmF.setVisible(true);
                 ViewTmF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -78,7 +78,7 @@ public class HomePage {
                 ViewPrF.pack();
                 ViewPrF.setVisible(true);
                 ViewPrF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -93,7 +93,7 @@ public class HomePage {
                 CreateTsF.pack();
                 CreateTsF.setVisible(true);
                 CreateTsF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -108,7 +108,7 @@ public class HomePage {
                 ViewTsF.pack();
                 ViewTsF.setVisible(true);
                 ViewTsF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -123,7 +123,7 @@ public class HomePage {
                 TaskUp.pack();
                 TaskUp.setVisible(true);
                 TaskUp.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();

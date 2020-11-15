@@ -30,7 +30,7 @@ public class TaskCreator {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -65,7 +65,7 @@ public class TaskCreator {
                     HomePF.pack();
                     HomePF.setVisible(true);
                     HomePF.setLocationRelativeTo(null);
-                    // Closes current window - Source: https://stackoverflow.com/a/51356151
+                    // Closes current window
                     JComponent comp = (JComponent) e.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();
