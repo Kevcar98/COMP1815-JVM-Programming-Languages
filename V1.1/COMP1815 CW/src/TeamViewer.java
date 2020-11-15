@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class TeamViewer {
     public JPanel TeamVPanel;
     private JButton backToMainMenuButton;
@@ -18,7 +17,7 @@ public class TeamViewer {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();

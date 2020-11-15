@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-
 public class ProjectViewer {
     public JPanel ProjectVPanel;
     private JButton backToMainMenuButton;
@@ -17,9 +16,9 @@ public class ProjectViewer {
     public ProjectViewer() {
         handler = new ProjectHandler();
         project = handler.loadProjects();
-        if (project != null) {
+        if(project != null) {
             projectJList.setListData(project.toArray(new Project[0])); // converts list to new array for JList
-        } else if (project == null) {
+        } else if(project == null) {
             System.out.println("ERROR: Project is null");
         } else {
             System.out.println("ERROR: Project is of unknown status");
@@ -34,7 +33,7 @@ public class ProjectViewer {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window
+                // Closes current window - Source: https://stackoverflow.com/a/51356151
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();

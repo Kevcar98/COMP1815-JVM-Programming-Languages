@@ -4,6 +4,20 @@ import java.io.FileWriter
 import java.io.IOException
 
 
+/*
+fun main(args: Array<String>) {
+
+    val fileNameP = "Projects.txt"
+    val fileNameTm = "Teams.txt"
+    val fileNameTk = "Tasks.txt"
+
+    var fileP = File(fileNameP)
+    var fileTm = File(fileNameTm)
+    var fileTk = File(fileNameTk)
+
+}
+ */
+
 abstract class CreateFile {
     val fileNameP = "Projects.txt"
     val fileNameTm = "Teams.txt"
@@ -35,6 +49,7 @@ class FileProject() : CreateFile() {
     }
 }
 
+
 class FileTask() : CreateFile() {
     override fun save(data: String) {
         val path = System.getProperty("user.dir") + "\\$fileNameTk"
@@ -51,6 +66,7 @@ class FileTask() : CreateFile() {
         }
     }
 }
+
 
 class FileTeam() : CreateFile() {
     override fun save(data: String) {
