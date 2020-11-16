@@ -10,12 +10,16 @@ import java.util.regex.Pattern;
 public class ProjectCreator {
     public JPanel ProjectCPanel;
     private JButton backToMainMenuButton;
-    private JTextField AssignedTeamsF;
     private JButton createProjectButton;
     private JTextField ProjectIDF;
     private JTextField CommissionerF;
     private JTextField ProjectManagerF;
     private JLabel ResultF;
+    private JComboBox assignTeamsJBox;
+    private JButton resetTeamsButton;
+    private JButton addTeamButton;
+    private JLabel SelectedTeamF;
+    private String teamSelection = "";
     private ProjectHandler handler;
     private List<Project> project;
 
@@ -35,6 +39,7 @@ public class ProjectCreator {
 
     public ProjectCreator() {
         handler = new ProjectHandler();
+        assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForProject()));
 
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -57,28 +62,78 @@ public class ProjectCreator {
                 if (validationCheck(ProjectIDF.getText(), true) &&
                         validationCheck(CommissionerF.getText(), false) &&
                         validationCheck(ProjectManagerF.getText(), false) &&
-                        validationCheck(AssignedTeamsF.getText(), true)
+                        !teamSelection.isEmpty()
                 ) {
                     if (handler.uniqueIDCheck(ProjectIDF.getText())) {
-                        project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), "None Currently Assigned", AssignedTeamsF.getText());
+                        project = handler.createProject(
+                                ProjectIDF.getText(),
+                                CommissionerF.getText(),
+                                ProjectManagerF.getText(),
+                                "None Currently Assigned",
+                                teamSelection
+                        );
                         ResultF.setText(project.get(project.size() - 1).toString()); // Displays last item in list
-                        // Resizes and centers current window by re-packing it
-                        JComponent comp = (JComponent) e.getSource();
-                        Window win = SwingUtilities.getWindowAncestor(comp);
-                        win.pack();
-                        win.setLocationRelativeTo(null);
-
-                        // Saves project
                         handler.save(project);
                         JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
+
+                        // Back to Main Menu
+                        JFrame HomePF = new JFrame("Home Page");
+                        HomePF.setContentPane(new HomePage().HomePanel);
+                        HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        HomePF.pack();
+                        HomePF.setVisible(true);
+                        HomePF.setLocationRelativeTo(null);
+                        // Closes current window
+                        JComponent comp = (JComponent) e.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.dispose();
                     } else {
                         JOptionPane.showMessageDialog(ProjectCPanel, "Error! Project ID is not unique!");
                         ResultF.setText("Project details appear here:");
                     }
+                } else if (assignTeamsJBox.getSelectedItem() == null || teamSelection.isEmpty()) {
+                    JOptionPane.showMessageDialog(ProjectCPanel, "Error! There are no teams assigned. Please select at least one team (or create one if there are none available).");
+                    ResultF.setText("Project details appear here:");
                 } else {
                     JOptionPane.showMessageDialog(ProjectCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                     ResultF.setText("Project details appear here:");
                 }
+            }
+        });
+        addTeamButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (assignTeamsJBox.getSelectedItem() != null) { // Checks combo box if valid option selected
+                    if (teamSelection.isEmpty()) {
+                        teamSelection = teamSelection.concat(assignTeamsJBox.getSelectedItem().toString());
+                    } else {
+                        teamSelection = teamSelection.concat(" & " + assignTeamsJBox.getSelectedItem().toString()); // If not first entry, separate with &
+                    }
+                    assignTeamsJBox.removeItem(assignTeamsJBox.getSelectedItem()); // Remove option once selected
+                    SelectedTeamF.setText("Selected teams: " + teamSelection); // Display selection
+
+                    // Resizes and centers current window by re-packing it
+                    JComponent comp = (JComponent) e.getSource();
+                    Window win = SwingUtilities.getWindowAncestor(comp);
+                    win.pack();
+                    win.setLocationRelativeTo(null);
+                } else {
+                    JOptionPane.showMessageDialog(ProjectCPanel, "Error! There are no available teams to be assigned. Either they have all been selected or you should first create a team.");
+                }
+            }
+        });
+        resetTeamsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teamSelection = "";
+                assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForProject()));
+                SelectedTeamF.setText("Selected teams appear here:");
+
+                // Resizes and centers current window by re-packing it
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.pack();
+                win.setLocationRelativeTo(null);
             }
         });
     }

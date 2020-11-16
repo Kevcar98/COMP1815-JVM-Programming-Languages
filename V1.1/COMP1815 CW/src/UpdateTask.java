@@ -38,21 +38,21 @@ public class UpdateTask {
                     Boolean foundID = handler.updateTasksProgress(id, progress);
                     if (foundID) {
                         JOptionPane.showMessageDialog(UpdateTPanel, "Task Progress Updated.");
+
+                        // Back to Main Menu
+                        JFrame HomePF = new JFrame("Home Page");
+                        HomePF.setContentPane(new HomePage().HomePanel);
+                        HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        HomePF.pack();
+                        HomePF.setVisible(true);
+                        HomePF.setLocationRelativeTo(null);
+                        // Closes current window
+                        JComponent comp = (JComponent) e.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.dispose();
                     } else {
                         JOptionPane.showMessageDialog(UpdateTPanel, "Error! Task ID Not Found!");
                     }
-
-                    // Back to Main Menu
-                    JFrame HomePF = new JFrame("Home Page");
-                    HomePF.setContentPane(new HomePage().HomePanel);
-                    HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    HomePF.pack();
-                    HomePF.setVisible(true);
-                    HomePF.setLocationRelativeTo(null);
-                    // Closes current window
-                    JComponent comp = (JComponent) e.getSource();
-                    Window win = SwingUtilities.getWindowAncestor(comp);
-                    win.dispose();
                 } else {
                     JOptionPane.showMessageDialog(UpdateTPanel, "Error! Avoid using special characters or invalid inputs (use numbers only)");
                 }

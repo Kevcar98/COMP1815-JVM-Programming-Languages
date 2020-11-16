@@ -9,7 +9,7 @@ data class Project(
         var Commissioner: String = "",
         var ProjectMng: String = "",
         var AssignedTasksID: String = "",
-        var AssignedTeamsID: Int = 0) {
+        var AssignedTeamsID: String = "") {
 }
 
 class ProjectHandler() {
@@ -21,7 +21,7 @@ class ProjectHandler() {
                 Commissioner = if (Commissioner.isEmpty()) "Unknown Commissioner" else Commissioner,
                 ProjectMng = if (ProjectMng.isEmpty()) "Unknown Project Manager" else ProjectMng,
                 AssignedTasksID = if (AssignedTasksID.isEmpty()) "None Currently Assigned" else AssignedTasksID,
-                AssignedTeamsID = if (AssignedTeamsID.isEmpty()) 0 else AssignedTeamsID.toInt()
+                AssignedTeamsID = if (AssignedTeamsID.isEmpty()) "No Teams Currently Assigned" else AssignedTeamsID
         ))
         return project
     }
@@ -104,5 +104,40 @@ class ProjectHandler() {
             println("Error: IO Exception")
         }
         return false
+    }
+
+    fun listTeamsForProject(): Array<String> {
+        try {
+            val fr = FileReader("Teams.txt")
+            val br = BufferedReader(fr)
+            var fileLines: String
+            while (br.ready()) {
+                fileLines = br.readLine()
+                fileLines = fileLines.replace("Teams(", "") // Formatting the read input from Teams.txt to parse data into Arrays
+                fileLines = fileLines.replace("TeamID=", "")
+                fileLines = fileLines.replace(" TeamLeader=", "")
+                fileLines = fileLines.replace(" TeamMembers=", "")
+                fileLines = fileLines.replace(" TeamLoc=", "")
+                fileLines = fileLines.replace(")", "")
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                for (i in parts.indices) {
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
+                }
+
+                // Loads Teams from File, then this block returns an array of Team IDs
+                var array = Array<String>(parts.size) { "" }
+                for (i in parts.indices) {
+                    array[i] = allParts[i][0]
+                }
+                br.close()
+                return array
+            }
+        } catch (e: FileNotFoundException) {
+            println("Error: File Not Found")
+        } catch (e: IOException) {
+            println("Error: IO Exception")
+        }
+        return Array<String>(0) { "" } // return empty array if file empty
     }
 }

@@ -15,11 +15,14 @@ public class TaskCreator {
     private JTextField TaskIDF;
     private JButton createTaskButton;
     private JTextField TaskDurationF;
+    private JComboBox assignProjectsJBox;
+    private JComboBox assignTeamsJBox;
     private TaskHandler handler;
     private List<Tasks> task;
 
     public TaskCreator() {
         handler = new TaskHandler();
+        assignProjectsJBox.setModel(new DefaultComboBoxModel(handler.listProjectsForTask()));
 
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -40,20 +43,20 @@ public class TaskCreator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ProjectCreator.validationCheck(TaskIDF.getText(), true) &&
-                        ProjectCreator.validationCheck(ProjectIDF.getText(), true) &&
+                        assignProjectsJBox.getSelectedItem() != null &&
                         ProjectCreator.validationCheck(CommissionerF.getText(), false) &&
                         ProjectCreator.validationCheck(ProjectManagerF.getText(), false) &&
                         ProjectCreator.validationCheck(TaskDurationF.getText(), true) &&
-                        ProjectCreator.validationCheck(AssignedTeamsF.getText(), true)
+                        assignTeamsJBox.getSelectedItem() != null
                 ) {
                     if (handler.uniqueIDCheck(TaskIDF.getText())) {
                         task = handler.createTask(
                                 TaskIDF.getText(),
-                                ProjectIDF.getText(),
+                                assignProjectsJBox.getSelectedItem().toString(),
                                 CommissionerF.getText(),
                                 ProjectManagerF.getText(),
                                 TaskDurationF.getText(),
-                                AssignedTeamsF.getText(),
+                                assignTeamsJBox.getSelectedItem().toString(),
                                 "0"
                         );
                         handler.save(task);
@@ -73,8 +76,22 @@ public class TaskCreator {
                     } else {
                         JOptionPane.showMessageDialog(TaskCPanel, "Error! Task ID is not unique!");
                     }
+                } else if (assignProjectsJBox.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no projects selected. Please select at least one project (or create one if there are none available).");
+                } else if (assignTeamsJBox.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no teams selected. Please select at least one team (or create one if there are none available).");
                 } else {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
+                }
+            }
+        });
+        assignProjectsJBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (assignProjectsJBox.getSelectedItem() != null) {
+                    // Sets Teams combo box to the Team IDs associated with the selected Project ID
+                    String[] test = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
+                    assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(test)));
                 }
             }
         });
