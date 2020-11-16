@@ -5,15 +5,15 @@ import java.awt.event.ActionListener;
 
 
 public class HomePage {
+    public JPanel HomePanel;
     private JButton viewTeamsButton;
     private JButton createTeamButton;
     private JButton createProjectButton;
     private JButton viewProjectsButton;
-    public JPanel HomePanel;
     private JButton createTaskButton;
     private JButton viewTasksButton;
     private JButton updateTaskProgressButton;
-    private JButton updateTaskDurationButton;
+	private JButton updateTaskDurationButton;
 
     public static void main(String[] args) {
         JFrame HomePF = new JFrame("Home Page");
@@ -34,7 +34,7 @@ public class HomePage {
                 CreateTmF.pack();
                 CreateTmF.setVisible(true);
                 CreateTmF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -49,7 +49,7 @@ public class HomePage {
                 CreatePrF.pack();
                 CreatePrF.setVisible(true);
                 CreatePrF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -64,7 +64,7 @@ public class HomePage {
                 ViewTmF.pack();
                 ViewTmF.setVisible(true);
                 ViewTmF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -79,7 +79,7 @@ public class HomePage {
                 ViewPrF.pack();
                 ViewPrF.setVisible(true);
                 ViewPrF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -94,11 +94,10 @@ public class HomePage {
                 CreateTsF.pack();
                 CreateTsF.setVisible(true);
                 CreateTsF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
         viewTasksButton.addActionListener(new ActionListener() {
@@ -110,7 +109,7 @@ public class HomePage {
                 ViewTsF.pack();
                 ViewTsF.setVisible(true);
                 ViewTsF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
@@ -119,20 +118,19 @@ public class HomePage {
         updateTaskProgressButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame TaskUpP = new JFrame("Update Task Progress");
-                TaskUpP.setContentPane(new UpdateTask().UpdateTPanel);
-                TaskUpP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                TaskUpP.pack();
-                TaskUpP.setVisible(true);
-                TaskUpP.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                JFrame TaskUp = new JFrame("Update Tasks");
+                TaskUp.setContentPane(new UpdateTask().UpdateTPanel);
+                TaskUp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                TaskUp.pack();
+                TaskUp.setVisible(true);
+                TaskUp.setLocationRelativeTo(null);
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-
             }
         });
-        updateTaskDurationButton.addActionListener(new ActionListener() {
+		updateTaskDurationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame TaskUpD = new JFrame("Update Task Duration");
@@ -141,8 +139,8 @@ public class HomePage {
                 TaskUpD.pack();
                 TaskUpD.setVisible(true);
                 TaskUpD.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
-                JComponent comp = (JComponent) e.getSource();
+                // Closes current window
+				JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
             }

@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class ProjectCreator {
     public JPanel ProjectCPanel;
     private JButton backToMainMenuButton;
     private JTextField AssignedTeamsF;
-    private JButton verifyProjectButton;
+    private JButton createProjectButton;
     private JTextField ProjectIDF;
     private JTextField CommissionerF;
     private JTextField ProjectManagerF;
-    private JTextField NumOfTasksF;
     private JLabel ResultF;
-    private JButton createProjectButton;
     private ProjectHandler handler;
     private List<Project> project;
 
@@ -46,51 +45,40 @@ public class ProjectCreator {
                 HomePF.pack();
                 HomePF.setVisible(true);
                 HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
+                // Closes current window
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
-            }
-        });
-        verifyProjectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if( validationCheck(ProjectIDF.getText(), true) &&
-                    validationCheck(CommissionerF.getText(), false) &&
-                    validationCheck(ProjectManagerF.getText(), false) &&
-                    validationCheck(NumOfTasksF.getText(), true) &&
-                    validationCheck(AssignedTeamsF.getText(), true)
-                ) {
-                    project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), NumOfTasksF.getText(), AssignedTeamsF.getText());
-                    ResultF.setText(project.get(project.size() - 1).toString()); // displays last item in list
-                } else {
-                    JOptionPane.showMessageDialog(ProjectCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
-                    ResultF.setText("Project details appear here:");
-                }
-                // Resizes and centers current window by re-packing it
-                JComponent comp = (JComponent) e.getSource();
-                Window win = SwingUtilities.getWindowAncestor(comp);
-                win.pack();
-                win.setLocationRelativeTo(null);
             }
         });
         createProjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(project.size());
-                handler.save(project);
-                JFrame HomePF = new JFrame("Home Page");
-                HomePF.setContentPane(new HomePage().HomePanel);
-                HomePF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                HomePF.pack();
-                HomePF.setVisible(true);
-                HomePF.setLocationRelativeTo(null);
-                // Closes current window - Source: https://stackoverflow.com/a/51356151
-                JComponent comp = (JComponent) e.getSource();
-                Window win = SwingUtilities.getWindowAncestor(comp);
-                win.dispose();
-                JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
+                if (validationCheck(ProjectIDF.getText(), true) &&
+                        validationCheck(CommissionerF.getText(), false) &&
+                        validationCheck(ProjectManagerF.getText(), false) &&
+                        validationCheck(AssignedTeamsF.getText(), true)
+                ) {
+                    if (handler.uniqueIDCheck(ProjectIDF.getText())) {
+                        project = handler.createProject(ProjectIDF.getText(), CommissionerF.getText(), ProjectManagerF.getText(), "None Currently Assigned", AssignedTeamsF.getText());
+                        ResultF.setText(project.get(project.size() - 1).toString()); // Displays last item in list
+                        // Resizes and centers current window by re-packing it
+                        JComponent comp = (JComponent) e.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.pack();
+                        win.setLocationRelativeTo(null);
 
+                        // Saves project
+                        handler.save(project);
+                        JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
+                    } else {
+                        JOptionPane.showMessageDialog(ProjectCPanel, "Error! Project ID is not unique!");
+                        ResultF.setText("Project details appear here:");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(ProjectCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
+                    ResultF.setText("Project details appear here:");
+                }
             }
         });
     }
