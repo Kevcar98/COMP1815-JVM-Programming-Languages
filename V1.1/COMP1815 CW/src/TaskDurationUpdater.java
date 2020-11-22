@@ -31,7 +31,9 @@ public class TaskDurationUpdater {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ProjectCreator.validationCheck(TaskIDF.getText(), true) && ProjectCreator.validationCheck(DurationF.getText(), true)) {
+                if (ProjectCreator.validationCheck(TaskIDF.getText(), true) &&
+                        ProjectCreator.validationCheck(DurationF.getText(), true)
+                ) {
                     handler = new TaskHandler();
                     String id = TaskIDF.getText();
                     String duration = DurationF.getText();

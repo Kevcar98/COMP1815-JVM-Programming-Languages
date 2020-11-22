@@ -108,7 +108,7 @@ class TaskHandler() {
 
                 // Loads Tasks from File, then this block checks if inputted Task ID is existing
                 var emptyInput = false
-                if(ID == "") emptyInput = true
+                if (ID == "") emptyInput = true
                 for (i in parts.indices) {
                     for (j in allParts[i].indices) {
                         if (allParts[i][0] == ID || (emptyInput && allParts[i][0] == "0")) { // if TaskIDF text field is empty, TaskID is 0 so check if it exists
@@ -154,11 +154,9 @@ class TaskHandler() {
                 // Loads Tasks from File, then this block Updates the Progress of selected Task ID
                 var foundID = false
                 for (i in parts.indices) {
-                    for (j in allParts[i].indices) {
-                        if (allParts[i][0] == ID) {
-                            allParts[i][6] = Progress
-                            foundID = true
-                        }
+                    if (allParts[i][0] == ID) {
+                        allParts[i][6] = Progress
+                        foundID = true
                     }
                 }
                 if (!foundID) {
@@ -222,11 +220,9 @@ class TaskHandler() {
                 // Loads Tasks from File, then this block Updates the Duration of selected Task ID
                 var foundID = false
                 for (i in parts.indices) {
-                    for (j in allParts[i].indices) {
-                        if (allParts[i][0] == ID) {
-                            allParts[i][4] = Duration
-                            foundID = true
-                        }
+                    if (allParts[i][0] == ID) {
+                        allParts[i][4] = Duration
+                        foundID = true
                     }
                 }
                 if (!foundID) {
@@ -383,26 +379,29 @@ class TaskHandler() {
         return Array<String>(0) { "" } // return empty array if file empty
     }
 
-    fun alistTeamsForTask(): Array<String> {
+    fun listTasksForTasks(): Array<String> {
         try {
-            val fr = FileReader("Teams.txt")
+            val fr = FileReader("Tasks.txt")
             val br = BufferedReader(fr)
             var fileLines: String
             while (br.ready()) {
                 fileLines = br.readLine()
-                fileLines = fileLines.replace("Teams(", "") // Formatting the read input from Teams.txt to parse data into Arrays
-                fileLines = fileLines.replace("TeamID=", "")
-                fileLines = fileLines.replace(" TeamLeader=", "")
-                fileLines = fileLines.replace(" TeamMembers=", "")
-                fileLines = fileLines.replace(" TeamLoc=", "")
+                fileLines = fileLines.replace("Tasks(", "") // Formatting the read input from Tasks.txt to parse data into Arrays
+                fileLines = fileLines.replace("TaskID=", "")
+                fileLines = fileLines.replace(" ProjectID=", "")
+                fileLines = fileLines.replace(" Commissioner=", "")
+                fileLines = fileLines.replace(" ProjectMng=", "")
+                fileLines = fileLines.replace(" Duration=", "")
+                fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" Progress=", "")
                 fileLines = fileLines.replace(")", "")
-                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Tasks via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(7) { "" } } // Make 3D Array with dimensions: Tasks vs. Tasks Parameters (ID, etc)
                 for (i in parts.indices) {
-                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Task, input their respective Task Parameters into Array via split()
                 }
 
-                // Loads Teams from File, then this block returns an array of Team IDs
+                // Loads Tasks from File, then this block returns an array of Task IDs
                 var array = Array<String>(parts.size) { "" }
                 for (i in parts.indices) {
                     array[i] = allParts[i][0]

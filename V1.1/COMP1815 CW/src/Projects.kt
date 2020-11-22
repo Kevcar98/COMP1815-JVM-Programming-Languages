@@ -1,7 +1,4 @@
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.BufferedReader
-import java.io.FileReader
+import java.io.*
 
 
 data class Project(
@@ -85,7 +82,7 @@ class ProjectHandler() {
 
                 // Loads Projects from File, then this block checks if inputted Project ID is existing
                 var emptyInput = false
-                if(ID == "") emptyInput = true
+                if (ID == "") emptyInput = true
                 for (i in parts.indices) {
                     for (j in allParts[i].indices) {
                         if (allParts[i][0] == ID || (emptyInput && allParts[i][0] == "0")) { // if ProjectIDF text field is empty, ProjectID is 0 so check if it exists
@@ -139,5 +136,69 @@ class ProjectHandler() {
             println("Error: IO Exception")
         }
         return Array<String>(0) { "" } // return empty array if file empty
+    }
+
+    fun updateProjectTaskData(inputProject: String, assignedTask: String) {
+        try {
+            val fr = FileReader("Projects.txt")
+            val br = BufferedReader(fr)
+            var fileLines: String
+            while (br.ready()) {
+                fileLines = br.readLine()
+                fileLines = fileLines.replace("Project(", "") // Formatting the read input from Projects.txt to parse data into Arrays
+                fileLines = fileLines.replace("ProjectID=", "")
+                fileLines = fileLines.replace(" Commissioner=", "")
+                fileLines = fileLines.replace(" ProjectMng=", "")
+                fileLines = fileLines.replace(" AssignedTasksID=", "")
+                fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(")", "")
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                for (i in parts.indices) {
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
+                }
+
+                // Loads Projects from File, then this block Updates the AssignedTasksID of selected Project ID
+                for (i in parts.indices) {
+                    if (allParts[i][0] == inputProject) {
+                        if (allParts[i][3] == "None Currently Assigned") {
+                            allParts[i][3] = ""
+                            // Clears contents of AssignedTasksID of selected Project ID to be reassigned below
+                            allParts[i][3] += assignedTask
+                        } else {
+                            allParts[i][3] += " & $assignedTask"
+                        }
+                        // If array with the selected Project ID is found, another if statement checks if AssignedTasksID is "None Currently Assigned"
+                        // If so, then it clears its contents and reassigns it for the selected Project ID
+                        // If not, it adds the new task separated by a "&" symbol
+                    }
+                }
+
+                // Clears current contents of Projects.txt file
+                val pw = PrintWriter("Projects.txt")
+                pw.close()
+
+                for (i in parts.indices) {
+                    createProject(
+                            allParts[i][0],
+                            allParts[i][1],
+                            allParts[i][2],
+                            allParts[i][3],
+                            allParts[i][4]
+                    ) // Creates an object of type Project for each, using Parameter data
+                    save(project) // Saves newly created project from array of projects (now using the task with the modified AssignedTaskID) to emptied Projects.txt file
+                    project.clear() // Clears mutable list of projects to avoid saving the entire list of projects each loop through the array
+                }
+            }
+            br.close()
+        } catch (e: FileNotFoundException) {
+            println("Error: File Not Found")
+        } catch (e: IOException) {
+            println("Error: IO Exception")
+        } catch (e: StringIndexOutOfBoundsException) {
+            // println("Warning: String Index Out of Bounds Exception")
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            // println("Warning: Array Index Out of Bounds Exception")
+        }
     }
 }

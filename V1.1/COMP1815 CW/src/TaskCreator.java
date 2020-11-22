@@ -15,12 +15,17 @@ public class TaskCreator {
     private JTextField TaskDurationF;
     private JComboBox assignProjectsJBox;
     private JComboBox assignTeamsJBox;
+    private JComboBox prerequisiteTasksJBox;
+    private JCheckBox noPrerequisiteTasksCBox;
     private TaskHandler handler;
     private List<Tasks> task;
+    private ProjectHandler proHandler;
 
     public TaskCreator() {
         handler = new TaskHandler();
-        assignProjectsJBox.setModel(new DefaultComboBoxModel(handler.listProjectsForTask()));
+        proHandler = new ProjectHandler();
+        assignProjectsJBox.setModel(new DefaultComboBoxModel(handler.listProjectsForTask())); // Sets Projects combo box to list of ProjectIDs
+        prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks())); // Sets Prerequisite Tasks combo box to list of TaskIDs
         if (assignProjectsJBox.getSelectedItem() != null) {
             // Sets Teams combo box to the Team IDs associated with the selected Project ID
             String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
@@ -50,7 +55,11 @@ public class TaskCreator {
                         ProjectCreator.validationCheck(CommissionerF.getText(), false) &&
                         ProjectCreator.validationCheck(ProjectManagerF.getText(), false) &&
                         ProjectCreator.validationCheck(TaskDurationF.getText(), true) &&
-                        assignTeamsJBox.getSelectedItem() != null
+                        assignTeamsJBox.getSelectedItem() != null &&
+                        (
+                                (!noPrerequisiteTasksCBox.isSelected() && prerequisiteTasksJBox.getSelectedItem() != null) ||
+                                (noPrerequisiteTasksCBox.isSelected())
+                        ) // Checks if the "No Prerequisite checkbox is checked, and if not, it checks if the Prerequisite Tasks combo box is not null
                 ) {
                     if (handler.uniqueIDCheck(TaskIDF.getText())) {
                         task = handler.createTask(
@@ -63,6 +72,18 @@ public class TaskCreator {
                                 "0"
                         );
                         handler.save(task);
+                        // Gets value of TaskIDF and adds it to the String assignedTaskID which will hold any prerequisite task as well
+                        String assignedTaskID = TaskIDF.getText();
+                        if (assignedTaskID.isEmpty()) {
+                            assignedTaskID = "0";
+                        }
+                        if (!noPrerequisiteTasksCBox.isSelected()) {
+                            assignedTaskID = prerequisiteTasksJBox.getSelectedItem().toString() + "->" + assignedTaskID;
+                        } // If the "No Prerequisites" checkbox is unchecked, use value of Prerequisite Tasks combo box
+                        proHandler.updateProjectTaskData(
+                                assignProjectsJBox.getSelectedItem().toString(),
+                                assignedTaskID
+                        ); // Upon creating a task, updates the relevant Project's AssignedTaskID to show this new task
                         JOptionPane.showMessageDialog(TaskCPanel, "Task saved.");
 
                         // Back to Main Menu
@@ -83,6 +104,8 @@ public class TaskCreator {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no projects selected. Please select at least one project (or create one if there are none available).");
                 } else if (assignTeamsJBox.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no teams selected. Please select at least one team (or create one if there are none available).");
+                } else if (!noPrerequisiteTasksCBox.isSelected() && prerequisiteTasksJBox.getSelectedItem() != null) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no prerequisite task selected. Please select at least one task (or create one if there are none available), or check the \"No Prerequisites\" checkbox.");
                 } else {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                 }

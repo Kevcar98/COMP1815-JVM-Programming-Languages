@@ -74,6 +74,13 @@ public class ProjectCreator {
                         );
                         ResultF.setText(project.get(project.size() - 1).toString()); // Displays last item in list
                         handler.save(project);
+
+                        // Resizes and centers current window by re-packing it
+                        JComponent comp = (JComponent) e.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.pack();
+                        win.setLocationRelativeTo(null);
+
                         JOptionPane.showMessageDialog(ProjectCPanel, "Project saved.");
 
                         // Back to Main Menu
@@ -84,8 +91,8 @@ public class ProjectCreator {
                         HomePF.setVisible(true);
                         HomePF.setLocationRelativeTo(null);
                         // Closes current window
-                        JComponent comp = (JComponent) e.getSource();
-                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        comp = (JComponent) e.getSource();
+                        win = SwingUtilities.getWindowAncestor(comp);
                         win.dispose();
                     } else {
                         JOptionPane.showMessageDialog(ProjectCPanel, "Error! Project ID is not unique!");

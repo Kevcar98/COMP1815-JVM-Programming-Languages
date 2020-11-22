@@ -32,7 +32,9 @@ public class UpdateTask {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handler = new TaskHandler();
-                if (ProjectCreator.validationCheck(TaskIDF.getText(), true) && ProjectCreator.validationCheck(ProgressF.getText(), true)) {
+                if (ProjectCreator.validationCheck(TaskIDF.getText(), true) &&
+                        ProjectCreator.validationCheck(ProgressF.getText(), true)
+                ) {
                     String id = TaskIDF.getText();
                     String progress = ProgressF.getText();
                     Boolean foundID = handler.updateTasksProgress(id, progress);
