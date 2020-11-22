@@ -8,8 +8,6 @@ import java.util.List;
 public class TaskCreator {
     public JPanel TaskCPanel;
     private JButton backToMainMenuButton;
-    private JTextField ProjectIDF;
-    private JTextField AssignedTeamsF;
     private JTextField ProjectManagerF;
     private JTextField CommissionerF;
     private JTextField TaskIDF;
@@ -23,6 +21,11 @@ public class TaskCreator {
     public TaskCreator() {
         handler = new TaskHandler();
         assignProjectsJBox.setModel(new DefaultComboBoxModel(handler.listProjectsForTask()));
+        if (assignProjectsJBox.getSelectedItem() != null) {
+            // Sets Teams combo box to the Team IDs associated with the selected Project ID
+            String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
+            assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(projectTeams)));
+        }
 
         backToMainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -90,8 +93,8 @@ public class TaskCreator {
             public void actionPerformed(ActionEvent e) {
                 if (assignProjectsJBox.getSelectedItem() != null) {
                     // Sets Teams combo box to the Team IDs associated with the selected Project ID
-                    String[] test = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
-                    assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(test)));
+                    String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
+                    assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(projectTeams)));
                 }
             }
         });
