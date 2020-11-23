@@ -17,6 +17,10 @@ public class TaskCreator {
     private JComboBox assignTeamsJBox;
     private JComboBox prerequisiteTasksJBox;
     private JCheckBox noPrerequisiteTasksCBox;
+    private JButton addPrerequisiteButton;
+    private JButton resetPrerequisitesButton;
+    private JLabel SelectedPrerequisiteF;
+    private String prerequisiteTaskID = "";
     private TaskHandler handler;
     private List<Tasks> task;
     private ProjectHandler proHandler;
@@ -56,10 +60,21 @@ public class TaskCreator {
                         ProjectCreator.validationCheck(ProjectManagerF.getText(), false) &&
                         ProjectCreator.validationCheck(TaskDurationF.getText(), true) &&
                         assignTeamsJBox.getSelectedItem() != null &&
+                        // If the "No Prerequisites" checkbox is checked but the user has added to the prerequisiteTaskID String, warn them
+                        (
+                                (noPrerequisiteTasksCBox.isSelected() && prerequisiteTaskID.isEmpty()) ||
+                                (!noPrerequisiteTasksCBox.isSelected())
+                        ) &&
+                        // Checks if the "No Prerequisites" checkbox is checked, and if not, checks if the prerequisiteTaskID String is empty
+                        (
+                                (!noPrerequisiteTasksCBox.isSelected() && !prerequisiteTaskID.isEmpty()) ||
+                                (noPrerequisiteTasksCBox.isSelected())
+                        ) &&
+                        // Checks if the "No Prerequisites" checkbox is checked, and if not, it checks if the Prerequisite Tasks combo box is not null
                         (
                                 (!noPrerequisiteTasksCBox.isSelected() && prerequisiteTasksJBox.getSelectedItem() != null) ||
                                 (noPrerequisiteTasksCBox.isSelected())
-                        ) // Checks if the "No Prerequisite checkbox is checked, and if not, it checks if the Prerequisite Tasks combo box is not null
+                        )
                 ) {
                     if (handler.uniqueIDCheck(TaskIDF.getText())) {
                         task = handler.createTask(
@@ -78,8 +93,8 @@ public class TaskCreator {
                             assignedTaskID = "0";
                         }
                         if (!noPrerequisiteTasksCBox.isSelected()) {
-                            assignedTaskID = prerequisiteTasksJBox.getSelectedItem().toString() + "->" + assignedTaskID;
-                        } // If the "No Prerequisites" checkbox is unchecked, use value of Prerequisite Tasks combo box
+                            assignedTaskID = prerequisiteTaskID + "->" + assignedTaskID;
+                        } // If the "No Prerequisites" checkbox is unchecked, use value of prerequisiteTaskID String
                         proHandler.updateProjectTaskData(
                                 assignProjectsJBox.getSelectedItem().toString(),
                                 assignedTaskID
@@ -104,8 +119,10 @@ public class TaskCreator {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no projects selected. Please select at least one project (or create one if there are none available).");
                 } else if (assignTeamsJBox.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no teams selected. Please select at least one team (or create one if there are none available).");
-                } else if (!noPrerequisiteTasksCBox.isSelected() && prerequisiteTasksJBox.getSelectedItem() != null) {
-                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no prerequisite task selected. Please select at least one task (or create one if there are none available), or check the \"No Prerequisites\" checkbox.");
+                } else if (!noPrerequisiteTasksCBox.isSelected() && prerequisiteTaskID.isEmpty()) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no prerequisite tasks assigned. Please select at least one prerequisite task (or create one if there are none available), or check the \"No Prerequisites\" checkbox.");
+                } else if (noPrerequisiteTasksCBox.isSelected() && !prerequisiteTaskID.isEmpty()) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! You have checked the \"No Prerequisites\" checkbox but have added prerequisites with the button. Please either uncheck the checkbox or click the \"Reset Prerequisites\" button.");
                 } else {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                 }
@@ -119,6 +136,42 @@ public class TaskCreator {
                     String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
                     assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(projectTeams)));
                 }
+            }
+        });
+        addPrerequisiteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (prerequisiteTasksJBox.getSelectedItem() != null) { // Checks combo box if valid option selected
+                    if (prerequisiteTaskID.isEmpty()) {
+                        prerequisiteTaskID = prerequisiteTaskID.concat(prerequisiteTasksJBox.getSelectedItem().toString());
+                    } else {
+                        prerequisiteTaskID = prerequisiteTaskID.concat("+" + prerequisiteTasksJBox.getSelectedItem().toString()); // If not first entry, separate with +
+                    }
+                    prerequisiteTasksJBox.removeItem(prerequisiteTasksJBox.getSelectedItem()); // Remove option once selected
+                    SelectedPrerequisiteF.setText("Selected prerequisite tasks: " + prerequisiteTaskID); // Display selection
+
+                    // Resizes and centers current window by re-packing it
+                    JComponent comp = (JComponent) e.getSource();
+                    Window win = SwingUtilities.getWindowAncestor(comp);
+                    win.pack();
+                    win.setLocationRelativeTo(null);
+                } else {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no available tasks to be assigned. Either they have all been selected or you should first create a task.");
+                }
+            }
+        });
+        resetPrerequisitesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prerequisiteTaskID = "";
+                prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks()));
+                SelectedPrerequisiteF.setText("Selected prerequisite tasks appear here:");
+
+                // Resizes and centers current window by re-packing it
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.pack();
+                win.setLocationRelativeTo(null);
             }
         });
     }

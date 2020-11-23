@@ -98,7 +98,7 @@ public class ProjectCreator {
                         JOptionPane.showMessageDialog(ProjectCPanel, "Error! Project ID is not unique!");
                         ResultF.setText("Project details appear here:");
                     }
-                } else if (assignTeamsJBox.getSelectedItem() == null || teamSelection.isEmpty()) {
+                } else if (teamSelection.isEmpty()) {
                     JOptionPane.showMessageDialog(ProjectCPanel, "Error! There are no teams assigned. Please select at least one team (or create one if there are none available).");
                     ResultF.setText("Project details appear here:");
                 } else {
