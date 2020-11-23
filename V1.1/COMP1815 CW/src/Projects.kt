@@ -189,12 +189,12 @@ class ProjectHandler() {
                     save(project) // Saves newly created project from array of projects (now using the task with the modified AssignedTaskID) to emptied Projects.txt file
                     project.clear() // Clears mutable list of projects to avoid saving the entire list of projects each loop through the array
                 }
+                br.close()
             }
-            br.close()
         } catch (e: FileNotFoundException) {
             println("Error: File Not Found")
         } catch (e: IOException) {
-            println("Error: IO Exception")
+            // println("Error: IO Exception")
         } catch (e: StringIndexOutOfBoundsException) {
             // println("Warning: String Index Out of Bounds Exception")
         } catch (e: ArrayIndexOutOfBoundsException) {
