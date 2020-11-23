@@ -115,9 +115,10 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" TeamLeader=", "")
                 fileLines = fileLines.replace(" TeamMembers=", "")
                 fileLines = fileLines.replace(" TeamLoc=", "")
+                fileLines = fileLines.replace(" TeamCost=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
                 }
@@ -200,5 +201,44 @@ class ProjectHandler() {
         } catch (e: ArrayIndexOutOfBoundsException) {
             // println("Warning: Array Index Out of Bounds Exception")
         }
+    }
+
+    fun retrieveAssignedTasksID(inputProject: String): String {
+        try {
+            val fr = FileReader("Projects.txt")
+            val br = BufferedReader(fr)
+            var fileLines: String
+            while (br.ready()) {
+                fileLines = br.readLine()
+                fileLines = fileLines.replace("Project(", "") // Formatting the read input from Projects.txt to parse data into Arrays
+                fileLines = fileLines.replace("ProjectID=", "")
+                fileLines = fileLines.replace(" Commissioner=", "")
+                fileLines = fileLines.replace(" ProjectMng=", "")
+                fileLines = fileLines.replace(" AssignedTasksID=", "")
+                fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(")", "")
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                for (i in parts.indices) {
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
+                }
+
+                // Loads Projects from File, then this block returns the AssignedTasksID of selected Project ID
+                var assignedTaskIDs = ""
+                for (i in parts.indices) {
+                    if (allParts[i][0] == inputProject) {
+                        assignedTaskIDs = allParts[i][3]
+                        // If array with the selected Project ID is found, get the AssignedTasksID
+                    }
+                }
+                br.close()
+                return assignedTaskIDs
+            }
+        } catch (e: FileNotFoundException) {
+            println("Error: File Not Found")
+        } catch (e: IOException) {
+            println("Error: IO Exception")
+        }
+        return "" // return empty string if project empty
     }
 }
