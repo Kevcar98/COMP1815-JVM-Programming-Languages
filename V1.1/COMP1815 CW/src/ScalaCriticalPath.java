@@ -14,7 +14,7 @@ public class ScalaCriticalPath {
     private JButton backToMainMenuButton;
     public JPanel ScalaCPPanel;
     private ProjectHandler handler;
-    private ScalaCP cphandler ;
+    private ScalaCP cphandler;
 
 
     public ScalaCriticalPath() {
@@ -41,33 +41,28 @@ public class ScalaCriticalPath {
                 String ProjectID = ProjectIDF.getText();
                 String AssignedTasksID = handler.retrieveAssignedTasksID(ProjectID);
                 System.out.println(AssignedTasksID); // "31 & 32 & 123->33 & 1+2->5"
-                System.out.println("AssignedTasksID");
                 String[] AssignedTasks = AssignedTasksID.split(" & "); // [31,32,123->33,1+2->5]
-
                 String preq = "";
                 String nPreq = "";
-
                 for (int i = 0; i < AssignedTasks.length; i++) {
                     if (AssignedTasks[i].contains("->")) {
                         if (preq.isEmpty()) {
                             preq = AssignedTasks[i];
                         } else {
-                            preq +=","+ AssignedTasks[i] ;
+                            preq += "," + AssignedTasks[i];
                         } // if it is prerequisite task (e.g. 1+2->5), then add it to preq String, separated by , (e.g. preq = "123->33,1+2->5")
                     } else {
                         if (nPreq.isEmpty()) {
                             nPreq = AssignedTasks[i];
                         } else {
-                            nPreq += ","+ AssignedTasks[i];
+                            nPreq += "," + AssignedTasks[i];
                         } // nPreq = "31,32"
                     }
                 }
                 String[] AssignedPTasks = preq.split(","); // [123->33,1+2->5]
                 String[] AssignedNPTasks = nPreq.split(","); // [31,32]
+
                 cphandler.main(AssignedPTasks,AssignedNPTasks);
-
-
-
             }
         });
     }
