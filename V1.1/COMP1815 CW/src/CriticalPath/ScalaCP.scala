@@ -66,25 +66,20 @@ class ScalaCP {
     }
 
     // start of tree code
-    var arrayP: Array[String] = Array.fill[String](Preq.length)("")
-    var arrayPL: Array[String] = Array.fill[String](arrayP.length)("")
+    // var arrayP: Array[String] = Array.fill[String](Preq.length)("")
+    // var arrayPL: Array[String] = Array.fill[String](arrayP.length)("")
 
     val Project = new DAG[Int](0)
     println("Start of tree")
-    for (i <- 0 until Preq.size) {
-      println(Preq(i))
-    }
-    for (i <- 0 until NPreq.size) {
-      println(NPreq(i))
-    }
 
     for (i <- 0 until NPreq.length) {
       var nprq = NPreq(i).toInt
       Project.extend(Set(0), nprq)
+      //println("nprq iteration " + i + ": " + nprq)
     }
     for (i <- 0 until Preq.length) { // Preq = [123->33,1+2->5] // Preq = [123->33,1+2->5,0+1+2+3+4->6] // Preq = [1->2,3+2->4,4->5]
-      arrayP = Preq(i).split("->") // when i = 0, [123,33], when i = 1, [1+2,5] // when i = 2, [0+1+2+3+4,6] // [1,2] [3+2,4] [4,5]
-      arrayPL = arrayP(0).split("\\+") // when i = 0, [123], when i = 1, [1,2] // when i = 2, [0,1,2,3,4] // [1] [3,2] [4]
+      var arrayP = Preq(i).split("->") // when i = 0, [123,33], when i = 1, [1+2,5] // when i = 2, [0+1+2+3+4,6] // [1,2] [3+2,4] [4,5]
+      var arrayPL = arrayP(0).split("\\+") // when i = 0, [123], when i = 1, [1,2] // when i = 2, [0,1,2,3,4] // [1] [3,2] [4]
 
       /*for (j <- 0 until arrayPL.length) {
         arrayPL(j) = arrayPL(j).replace("+", ",")
@@ -92,43 +87,30 @@ class ScalaCP {
         println("arrayPL(j)")
       }*/
       var Child = arrayP(1).toInt
-      /*if (arrayPL(i).size > 1) { // if more than one prerequisite task
-        //
+      var seq: Seq[Int] = Seq()
+      if (arrayPL.size > 1) { // if more than one prerequisite task
+        var j = 0
+        var seqAppended: Seq[Int] = Seq()
+        while ( {
+          j < arrayPL.size
+        }) {
+          seq :+= arrayPL(j).toInt
+          println(arrayPL(j))
+          println(seq)
+          j += 1
+        }
+        Project.extend(Set(seq: _*), Child)
+        //println("seqApp iteration " + j + ": " + seq + " & child: " + Child)
       } else {
-        //
-      }*/
-      var seq: Seq[Int] = Seq(arrayPL.size) // 0, 1, 2
-      println(seq)
+        Project.extend(Set(arrayPL(0).toInt), Child)
+        //println("arrayPL iteration " + i + ": " + arrayPL(0) + " & child: " + Child)
+      }
+      //var seqOld: Seq[Int] = Seq(arrayPL.size) // 0, 1, 2
+      //println(seqOld)
 
-      Project.extend(Set(seq: _*), Child)
+      // on loop 1: [i] always equal for Preq and arrayP --- not the case for arrayPL which can be 0 to infinity.
+      //Project.extend(Set(seqOld: _*), Child)//arrayPL
     }
-
-    // var Parents = ""
-    // var Child = 0
-
-    /*for (i <- 0 until arrayPL.length) {
-      //val pre: util.ArrayList[String] = new util.ArrayList[String]
-      //val save: util.ArrayList[String] = new util.ArrayList[String]
-      //pre.add(Preq(i))//whole expression
-      if (arrayPL(i).size > 1) { // if more than one prerequisite task
-        //Parents = arrayPL(i)
-        //var Prnts = Array(Parents)
-
-        /*arrayPL(i).split(",")
-        for (j <- 0 until arrayPL.length) {
-
-        }*/
-      }
-      else {
-        Child = arrayPL(i).toInt
-      }
-      var seq: Seq[Int] = Seq(arrayPL(i).toInt)
-      println(seq)
-
-      Project.extend(Set(seq: _*), Child)
-    }*/
-
-    // child
 
     Project.TheLargestBranch(0)
     Project.PrintTree(0)
