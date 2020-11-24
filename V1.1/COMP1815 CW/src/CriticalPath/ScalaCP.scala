@@ -56,62 +56,8 @@ class ScalaCP {
       this (root) = Set()
 
 
-      def MakingTree(): Unit = {
-        val Project = new DAG[Int](0)
-        var i = 0
-        for (i <- 0 until NPreq.length) {
-          var nprq = NPreq(i).toInt
-          Project.extend(Set(0), nprq)
-        }
-        for (i <- 0 until Preq.length) {
-          Preq(i).split("->")
-          if (Preq(i).contains("+")) {
-            Preq(i).replace("+",",")
-          }
-        }
-
-        var Parents = ""
-        var Child = 0
-
-        for (i <- 0 until Preq.length) {
-          //val pre: util.ArrayList[String] = new util.ArrayList[String]
-          //val save: util.ArrayList[String] = new util.ArrayList[String]
-          //pre.add(Preq(i))//whole expression
-
-          if (i % 2 == 0) {
-            Parents = Preq(i)
-            var Prnts = Array(Parents)
-            Prnts(0).split(",")
-            for (j <- 0 until Prnts.length) {
 
 
-            }
-          }
-          else {
-            var Child = Preq(i).toInt
-          }
-          Project.extend(Set(Parents),Child)
-        }
-
-
-
-
-          // child
-
-
-          if (Preq(i).contains("->")) {
-
-
-          }
-
-
-
-
-
-          //var prq=Preq(i).toInt
-          //println(prq)
-          //Project.extend(Set(0),prq)
-        }
 
 
 
@@ -121,36 +67,79 @@ class ScalaCP {
         //Project.extend(Set(1),2) //2
         //Project.extend(Set(3,2,0),4) //4
         //Project.extend(Set(4),5) //6
-        Project.TheLargestBranch(0)
-        Project.PrintTree(0)
+
       }
 
-
-      val ProjectsF = "Projects.txt"
-      val TasksF = "Tasks.txt"
-
-      val tree = new DAG[Int](0)
+    var arrayP :Array[String]= Array.fill[String](Preq.length)("0")
+    var arrayPL :Array[String]= Array.fill[String](arrayP.length)("0")
 
 
-      tree.extend(Set(0), 1) //0
-      tree.extend(Set(0), 3) //0
-      tree.extend(Set(1), 2) //2
-      tree.extend(Set(3, 2, 0), 4) //4
-      tree.extend(Set(4), 5) //6
-      tree.TheLargestBranch(0)
-      tree.PrintTree(0)
+    val Project = new DAG[Int](0)
+    println("Start of tree")
+    var i = 0
+    for (i <- 0 until NPreq.length) {
+      var nprq = NPreq(i).toInt
+      println(NPreq(i))
+      Project.extend(Set(0), nprq)
+    }
+    for (i <- 0 until Preq.length) {
+      arrayP= Preq(i).split(",")
+      arrayPL= arrayP(i).split("->")
+      println(Preq(i))
+
+      for(j <- 0 until arrayPL.length){
+        arrayPL(j)=arrayPL(j).replace("+",",")
+        println(arrayPL(j))
+        println("arrayPL(j)")
+      }
+
+      //arrayPL(i)=arrayPL(i).replace("+",",")
+      //println(arrayPL(i))
+    }
+
+    var Parents = ""
+    var Child = 0
+
+    for (i <- 0 until arrayPL.length) {
+      //val pre: util.ArrayList[String] = new util.ArrayList[String]
+      //val save: util.ArrayList[String] = new util.ArrayList[String]
+      //pre.add(Preq(i))//whole expression
+      if (i % 2 == 0) {
+        //Parents = arrayPL(i)
+        //var Prnts = Array(Parents)
+
+        arrayPL(i).split(",")
+        for (j <- 0 until arrayPL.length) {
+
+        }
+      }
+      else {
+        var Child = arrayPL(i).toInt
+      }
+      var seq:Seq[Int] = Seq(arrayPL(i).toInt)
+      println(seq)
+
+      Project.extend(Set(seq:_*),Child)
+    }
+
+    // child
+
+    Project.TheLargestBranch(0)
+    Project.PrintTree(0)
 
 
-      //tree.extend(Set(CurrentNODE),NewNode)
+
+
+    //tree.extend(Set(CurrentNODE),NewNode)
       //this links the CurrentNODE which can be multiple   to a NewNode
 
 
-      var y = Array("1", "2", "3", "4")
-      var z = Array("1+2->4", "3->5", "4+5->6")
-      MakingTree(z, y)
+      //var y = Array("1", "2", "3", "4")
+      //var z = Array("1+2->4", "3->5", "4+5->6")
+      //MakingTree(z, y)
 
     }
 
   }
 
-}
+
