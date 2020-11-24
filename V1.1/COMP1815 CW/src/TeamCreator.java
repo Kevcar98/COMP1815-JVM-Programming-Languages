@@ -47,8 +47,7 @@ public class TeamCreator {
                                 TeamIDF.getText(),
                                 TeamLeaderF.getText(),
                                 TeamLocationF.getText(),
-                                TeamMembersF.getText(),
-                                "0"
+                                TeamMembersF.getText()
                         );
                         handler.save(team);
                         JOptionPane.showMessageDialog(TeamCPanel, "Team saved.");

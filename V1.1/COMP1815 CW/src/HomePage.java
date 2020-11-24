@@ -14,6 +14,7 @@ public class HomePage {
     private JButton viewTasksButton;
     private JButton updateTaskProgressButton;
 	private JButton updateTaskDurationButton;
+    private JButton ScalaCriticalPath;
 
     public static void main(String[] args) {
         JFrame HomePF = new JFrame("Home Page");
@@ -141,6 +142,21 @@ public class HomePage {
                 TaskUpD.setLocationRelativeTo(null);
                 // Closes current window
 				JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
+            }
+        });
+        ScalaCriticalPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame SCPath = new JFrame("Scala Critical Path");
+                SCPath.setContentPane(new ScalaCriticalPath().ScalaCPPanel);
+                SCPath.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                SCPath.pack();
+                SCPath.setVisible(true);
+                SCPath.setLocationRelativeTo(null);
+                // Closes current window
+                JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
             }

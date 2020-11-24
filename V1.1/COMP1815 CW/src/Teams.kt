@@ -5,8 +5,7 @@ data class Teams(
         var TeamID: Int = 0,
         var TeamLeader: String = "",
         var TeamMembers: String = "",
-        var TeamLoc: String = "",
-        var TeamCost: Int = 0) {
+        var TeamLoc: String = "") {
 }
 
 class TeamHandler() {
@@ -17,7 +16,6 @@ class TeamHandler() {
             TeamLeader: String,
             TeamMembers: String,
             TeamLoc: String,
-            TeamCost: String
     ): List<Teams> {
         team.add(
                 Teams(
@@ -25,18 +23,9 @@ class TeamHandler() {
                         TeamLeader = if (TeamLeader.isEmpty()) "Unknown Team Leader" else TeamLeader,
                         TeamMembers = if (TeamMembers.isEmpty()) "Unknown Team Members" else TeamMembers,
                         TeamLoc = if (TeamLoc.isEmpty()) "Unknown TeamLoc" else TeamLoc,
-                        TeamCost = generateTeamCost(TeamMembers)
                 )
         )
         return team
-    }
-
-    val generateTeamCost = { NumMembers: String -> Int // declare lambda expression parameters and return type
-        var cost = 100 // Team Leader salary cost
-        for (i in NumMembers.split(" ").toTypedArray().indices) {
-            cost += 50 // Team Members salary cost for each
-        }
-        cost
     }
     
     fun save(team: List<Teams>?) {
@@ -55,10 +44,9 @@ class TeamHandler() {
                 fileLines = fileLines.replace(" TeamLeader=", "")
                 fileLines = fileLines.replace(" TeamMembers=", "")
                 fileLines = fileLines.replace(" TeamLoc=", "")
-                fileLines = fileLines.replace(" TeamCost=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
                 }
@@ -67,8 +55,7 @@ class TeamHandler() {
                             allParts[i][0],
                             allParts[i][1],
                             allParts[i][2],
-                            allParts[i][3],
-                            allParts[i][4]
+                            allParts[i][3]
                     ) // Creates an object of type Teams for each, using Parameter data
                 }
             }
@@ -94,10 +81,9 @@ class TeamHandler() {
                 fileLines = fileLines.replace(" TeamLeader=", "")
                 fileLines = fileLines.replace(" TeamMembers=", "")
                 fileLines = fileLines.replace(" TeamLoc=", "")
-                fileLines = fileLines.replace(" TeamCost=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
                 }

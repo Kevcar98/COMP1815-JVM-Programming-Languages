@@ -80,6 +80,14 @@
           <text value="Update Task Duration"/>
         </properties>
       </component>
+      <component id="d94be" class="javax.swing.JButton" binding="ScalaCriticalPath">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Scala Critical Path"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>
