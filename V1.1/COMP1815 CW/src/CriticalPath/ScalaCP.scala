@@ -8,15 +8,15 @@ import scala.io.Source
 
 class ScalaCP {
   def main(Preq: Array[String], NPreq: Array[String]): Unit = {
-
-
+    // Case class means there is no need to put new to instantiate the class (new DAG -> DAG)
     case class DAG[T](root: T) extends HashMap[T, Set[T]] {
 
       def extend(Parent: Set[T], Child: T) = {
-
-        require(Parent.subsetOf(this.keySet), s"$Parent")
+        // Preserve model consistency by setting method requirements for extend function
+        require(Parent.subsetOf(this.keySet), s"$Parent") // Parent:Set[T] of task must exist in the DAG
         require(!this.keySet.contains(Child), s" $Child")
 
+        // For each element of Parent tasks, increase successor’s set with new Child task
         Parent.foreach(key => this (key) += Child)
         this (Child) = new HashSet[T]
         this
@@ -30,6 +30,7 @@ class ScalaCP {
           var M = 0;
           var L: List[T] = Nil;
           this (node).foreach(suc => {
+            // For any successors, this computes, by recursion, the largest branch using a lambda expression with temporary variables
             val (lm, ll) = TheLargestBranch(suc)
             if (lm > M) {
               M = lm;
@@ -39,9 +40,9 @@ class ScalaCP {
           )
           (1 + M, node :: L)
         }
-
       }
 
+      // Prints a visual representation of the largest branch of the DAG
       def PrintTree(origin: T, Next: Int = 0): Unit = {
         if (contains(origin)) {
           for (i <- 0 until Next - 1) print("   ")
@@ -49,87 +50,50 @@ class ScalaCP {
           println(origin)
           this (origin).foreach(child => PrintTree(child, Next + 1))
         }
-
       }
 
       def join(dag: DAG[T]) = this
 
+      // Constructor to initialize itself as a map with the root entry
       this (root) = Set()
-
-
-      //Project.extend(Set(0),1) //0
-      //Project.extend(Set(0),3) //0
-      //Project.extend(Set(1),2) //2
-      //Project.extend(Set(3,2,0),4) //4
-      //Project.extend(Set(4),5) //6
-
     }
 
-    // start of tree code
-    // var arrayP: Array[String] = Array.fill[String](Preq.length)("")
-    // var arrayPL: Array[String] = Array.fill[String](arrayP.length)("")
-
-    val Project = new DAG[Int](0)
+    // Takes two input parameters: tasks with prerequisites and tasks without prerequisites - which are managed accordingly
+    val Project = DAG[Int](0)
     println("Start of tree")
 
     for (i <- 0 until NPreq.length) {
       var nprq = NPreq(i).toInt
       Project.extend(Set(0), nprq)
-      //println("nprq iteration " + i + ": " + nprq)
+      // println("nprq iteration " + i + ": " + nprq)
     }
-    for (i <- 0 until Preq.length) { // Preq = [123->33,1+2->5] // Preq = [123->33,1+2->5,0+1+2+3+4->6] // Preq = [1->2,3+2->4,4->5]
-      var arrayP = Preq(i).split("->") // when i = 0, [123,33], when i = 1, [1+2,5] // when i = 2, [0+1+2+3+4,6] // [1,2] [3+2,4] [4,5]
-      var arrayPL = arrayP(0).split("\\+") // when i = 0, [123], when i = 1, [1,2] // when i = 2, [0,1,2,3,4] // [1] [3,2] [4]
 
-      /*for (j <- 0 until arrayPL.length) {
-        arrayPL(j) = arrayPL(j).replace("+", ",")
-        println(arrayPL(j))
-        println("arrayPL(j)")
-      }*/
-      var Child = arrayP(1).toInt
+    for (i <- 0 until Preq.length) { // Preq = [1->2,3+2->4,4->5]
+      var arrayP = Preq(i).split("->") // arrayP = when i = 0, [1,2], when i = 1, [3+2,4], when i = 2, [4,5]
+      var arrayPL = arrayP(0).split("\\+") // arrayPL = when i = 0, [1], when i = 1, [3,2], when i = 2, [4]
+
       var seq: Seq[Int] = Seq()
-      if (arrayPL.size > 1) { // if more than one prerequisite task
+      if (arrayPL.size > 1) { // If more than one prerequisite task, loops through them to add to a sequence, passed into a set for input
         var j = 0
-        var seqAppended: Seq[Int] = Seq()
+        // The value of "i" is always within bounds for Preq[] (Preq.length) and arrayP[] (always contains two values)
+        // But arrayPL[] can hold a variable amount depending on how many prerequisite tasks it has, so loop its contents into a sequence
         while ( {
           j < arrayPL.size
         }) {
-          seq :+= arrayPL(j).toInt
-          println(arrayPL(j))
-          println(seq)
+          seq :+= arrayPL(j).toInt // Appends prerequisite task to current sequence
+          // println(arrayPL(j))
+          // println(seq)
           j += 1
         }
-        Project.extend(Set(seq: _*), Child)
-        //println("seqApp iteration " + j + ": " + seq + " & child: " + Child)
+        Project.extend(Set(seq: _*), arrayP(1).toInt)
+        // println("seq iteration " + j + ": " + seq + " & child: " + Child)
       } else {
-        Project.extend(Set(arrayPL(0).toInt), Child)
-        //println("arrayPL iteration " + i + ": " + arrayPL(0) + " & child: " + Child)
+        Project.extend(Set(arrayPL(0).toInt), arrayP(1).toInt)
+        // println("arrayPL iteration " + i + ": " + arrayPL(0) + " & child: " + Child)
       }
-      //var seqOld: Seq[Int] = Seq(arrayPL.size) // 0, 1, 2
-      //println(seqOld)
-
-      // on loop 1: [i] always equal for Preq and arrayP --- not the case for arrayPL which can be 0 to infinity.
-      //Project.extend(Set(seqOld: _*), Child)//arrayPL
     }
 
     Project.TheLargestBranch(0)
     Project.PrintTree(0)
-
-
-
-
-
-
-
-
-    //tree.extend(Set(CurrentNODE),NewNode)
-    //this links the CurrentNODE which can be multiple   to a NewNode
-
-
-    //var y = Array("1", "2", "3", "4")
-    //var z = Array("1+2->4", "3->5", "4+5->6")
-    //MakingTree(z, y)
-
   }
-
 }

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +35,17 @@ public class ProjectCreator {
         boolean numbersBoolean = numbersMatcher.find();
         if ((alphaBoolean && !numberOnly) || (numbersBoolean && numberOnly)) {
             System.out.println(s + " did not pass validation check");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validationDateCheck(String inputDate) {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false); // Must be in given format
+        try {
+            sdf.parse(inputDate);
+        } catch (ParseException e) {
             return false;
         }
         return true;
@@ -70,7 +84,10 @@ public class ProjectCreator {
                                 CommissionerF.getText(),
                                 ProjectManagerF.getText(),
                                 "None Currently Assigned",
-                                teamSelection
+                                teamSelection,
+                                "",
+                                "",
+                                ""
                         );
                         ResultF.setText(project.get(project.size() - 1).toString()); // Displays last item in list
                         handler.save(project);

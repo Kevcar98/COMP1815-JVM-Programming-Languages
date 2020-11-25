@@ -13,7 +13,7 @@ public class HomePage {
     private JButton createTaskButton;
     private JButton viewTasksButton;
     private JButton updateTaskProgressButton;
-	private JButton updateTaskDurationButton;
+    private JButton updateTaskDurationButton;
     private JButton ScalaCriticalPath;
 
     public static void main(String[] args) {

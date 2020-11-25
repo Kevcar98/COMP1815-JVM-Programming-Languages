@@ -1,4 +1,5 @@
 import java.io.*
+import java.time.*
 
 
 data class Project(
@@ -6,21 +7,46 @@ data class Project(
         var Commissioner: String = "",
         var ProjectMng: String = "",
         var AssignedTasksID: String = "",
-        var AssignedTeamsID: String = "") {
+        var AssignedTeamsID: String = "",
+        var StartDate: String = "",
+        var FinishDate: String = "",
+        var TotalDuration: Int = 0) {
 }
 
 class ProjectHandler() {
     val project = mutableListOf<Project>()
 
-    fun createProject(ProjectID: String, Commissioner: String, ProjectMng: String, AssignedTasksID: String, AssignedTeamsID: String): List<Project> {
+    fun createProject(
+            ProjectID: String,
+            Commissioner: String,
+            ProjectMng: String,
+            AssignedTasksID: String,
+            AssignedTeamsID: String,
+            StartDate: String,
+            FinishDate: String,
+            TotalDuration: String
+    ): List<Project> {
         project.add(Project(
                 ProjectID = if (ProjectID.isEmpty()) 0 else ProjectID.toInt(),
                 Commissioner = if (Commissioner.isEmpty()) "Unknown Commissioner" else Commissioner,
                 ProjectMng = if (ProjectMng.isEmpty()) "Unknown Project Manager" else ProjectMng,
                 AssignedTasksID = if (AssignedTasksID.isEmpty()) "None Currently Assigned" else AssignedTasksID,
-                AssignedTeamsID = if (AssignedTeamsID.isEmpty()) "No Teams Currently Assigned" else AssignedTeamsID
+                AssignedTeamsID = if (AssignedTeamsID.isEmpty()) "No Teams Currently Assigned" else AssignedTeamsID,
+                StartDate = if (StartDate.isEmpty()) getStartDate() else StartDate,
+                FinishDate = if (FinishDate.isEmpty()) getFinishDate(StartDate, TotalDuration.toLong()) else FinishDate,
+                TotalDuration = if (TotalDuration.isEmpty()) 0 else TotalDuration.toInt()
         ))
         return project
+    }
+
+    val getStartDate = { -> (String) // Declare lambda expression return type (no parameters)
+        val date: LocalDate = LocalDate.now()
+        date.toString()
+    }
+
+    val getFinishDate = { StartDate: String, TotalDuration: Long -> (String) // Declare lambda expression parameters and return type
+        val date: LocalDate = LocalDate.parse(StartDate)
+        date.plusDays(TotalDuration).toString()
     }
 
     fun save(project: List<Project>?) {
@@ -40,14 +66,27 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
+
                 for (i in parts.indices) {
-                    createProject(allParts[i][0], allParts[i][1], allParts[i][2], allParts[i][3], allParts[i][4]) // Creates an object of type Project for each, using Parameter data
+                    createProject(
+                            allParts[i][0],
+                            allParts[i][1],
+                            allParts[i][2],
+                            allParts[i][3],
+                            allParts[i][4],
+                            allParts[i][5],
+                            allParts[i][6],
+                            allParts[i][7]
+                    ) // Creates an object of type Project for each, using Parameter data
                 }
             }
             br.close()
@@ -73,9 +112,12 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
@@ -136,7 +178,7 @@ class ProjectHandler() {
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return Array<String>(0) { "" } // return empty array if file empty
+        return Array<String>(0) { "" } // Returns empty array if file empty
     }
 
     fun updateProjectTaskData(inputProject: String, assignedTask: String) {
@@ -152,9 +194,12 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
@@ -185,7 +230,10 @@ class ProjectHandler() {
                             allParts[i][1],
                             allParts[i][2],
                             allParts[i][3],
-                            allParts[i][4]
+                            allParts[i][4],
+                            allParts[i][5],
+                            allParts[i][6],
+                            allParts[i][7]
                     ) // Creates an object of type Project for each, using Parameter data
                     save(project) // Saves newly created project from array of projects (now using the task with the modified AssignedTaskID) to emptied Projects.txt file
                     project.clear() // Clears mutable list of projects to avoid saving the entire list of projects each loop through the array
@@ -216,9 +264,12 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
@@ -239,6 +290,61 @@ class ProjectHandler() {
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return "" // return empty string if project empty
+        return "" // Returns empty string if project empty
+    }
+
+    fun updateProject(teamIndex: Int, dataToEdit: Int, newData: String) {
+        try {
+            val fr = FileReader("Projects.txt")
+            val br = BufferedReader(fr)
+            var fileLines: String
+            while (br.ready()) {
+                fileLines = br.readLine()
+                fileLines = fileLines.replace("Project(", "") // Formatting the read input from Projects.txt to parse data into Arrays
+                fileLines = fileLines.replace("ProjectID=", "")
+                fileLines = fileLines.replace(" Commissioner=", "")
+                fileLines = fileLines.replace(" ProjectMng=", "")
+                fileLines = fileLines.replace(" AssignedTasksID=", "")
+                fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
+                fileLines = fileLines.replace(")", "")
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                for (i in parts.indices) {
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
+                }
+
+                // Loads Projects from File, then this block Updates the chosen data of the selected Project ID
+                allParts[teamIndex][dataToEdit] = newData
+
+                // Clears current contents of Projects.txt file
+                val pw = PrintWriter("Projects.txt")
+                pw.close()
+
+                for (i in parts.indices) {
+                    createProject(
+                            allParts[i][0],
+                            allParts[i][1],
+                            allParts[i][2],
+                            allParts[i][3],
+                            allParts[i][4],
+                            allParts[i][5],
+                            allParts[i][6],
+                            allParts[i][7]
+                    ) // Creates an object of type Projects for each, using Parameter data
+                    save(project) // Saves newly created project from array of projects (now using the project with the modified data) to emptied Projects.txt file
+                    project.clear() // Clears mutable list of projects to avoid saving the entire list of projects each loop through the array
+                }
+            }
+            br.close()
+        } catch (e: FileNotFoundException) {
+            println("Error: File Not Found")
+        } catch (e: IOException) {
+            println("Error: IO Exception")
+        } catch (e: StringIndexOutOfBoundsException) {
+            // println("Warning: String Index Out of Bounds Exception")
+        }
     }
 }
