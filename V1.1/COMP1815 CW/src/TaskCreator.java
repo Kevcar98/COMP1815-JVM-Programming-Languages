@@ -29,11 +29,12 @@ public class TaskCreator {
         handler = new TaskHandler();
         proHandler = new ProjectHandler();
         assignProjectsJBox.setModel(new DefaultComboBoxModel(handler.listProjectsForTask())); // Sets Projects combo box to list of ProjectIDs
-        prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks())); // Sets Prerequisite Tasks combo box to list of TaskIDs
         if (assignProjectsJBox.getSelectedItem() != null) {
             // Sets Teams combo box to the Team IDs associated with the selected Project ID
             String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
             assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(projectTeams)));
+            // Sets Prerequisite Tasks combo box to the Task IDs associated with the selected Project ID (task dependency must be on existing task)
+            prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks(assignProjectsJBox.getSelectedItem().toString())));
         }
 
         backToMainMenuButton.addActionListener(new ActionListener() {
@@ -55,6 +56,7 @@ public class TaskCreator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ProjectCreator.validationCheck(TaskIDF.getText(), true) &&
+                        !TaskIDF.getText().equals("0") &&
                         assignProjectsJBox.getSelectedItem() != null &&
                         ProjectCreator.validationCheck(CommissionerF.getText(), false) &&
                         ProjectCreator.validationCheck(ProjectManagerF.getText(), false) &&
@@ -90,7 +92,7 @@ public class TaskCreator {
                         // Gets value of TaskIDF and adds it to the String assignedTaskID which will hold any prerequisite task as well
                         String assignedTaskID = TaskIDF.getText();
                         if (assignedTaskID.isEmpty()) {
-                            assignedTaskID = "0";
+                            assignedTaskID = "1";
                         }
                         if (!noPrerequisiteTasksCBox.isSelected()) {
                             assignedTaskID = prerequisiteTaskID + "->" + assignedTaskID;
@@ -123,6 +125,8 @@ public class TaskCreator {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! There are no prerequisite tasks assigned. Please select at least one prerequisite task (or create one if there are none available), or check the \"No Prerequisites\" checkbox.");
                 } else if (noPrerequisiteTasksCBox.isSelected() && !prerequisiteTaskID.isEmpty()) {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! You have checked the \"No Prerequisites\" checkbox but have added prerequisites with the button. Please either uncheck the checkbox or click the \"Reset Prerequisites\" button.");
+                } else if (TaskIDF.getText().equals("0")) {
+                    JOptionPane.showMessageDialog(TaskCPanel, "Error! Task ID cannot be 0. Please input a different Task ID.");
                 } else {
                     JOptionPane.showMessageDialog(TaskCPanel, "Error! Avoid using special characters or invalid inputs (e.g. letters in a text field expecting only numbers)");
                 }
@@ -135,6 +139,11 @@ public class TaskCreator {
                     // Sets Teams combo box to the Team IDs associated with the selected Project ID
                     String[] projectTeams = handler.teamsAssignedToProject(assignProjectsJBox.getSelectedItem().toString());
                     assignTeamsJBox.setModel(new DefaultComboBoxModel(handler.listTeamsForTask(projectTeams)));
+                    // Sets Prerequisite Tasks combo box to the Task IDs associated with the selected Project ID (task dependency must be on existing task)
+                    prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks(assignProjectsJBox.getSelectedItem().toString())));
+                    // Resets selected prerequisite tasks to prevent tasks from other projects to be added
+                    prerequisiteTaskID = "";
+                    SelectedPrerequisiteF.setText("Selected prerequisite tasks appear here:");
                 }
             }
         });
@@ -164,7 +173,10 @@ public class TaskCreator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 prerequisiteTaskID = "";
-                prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks()));
+                if (assignProjectsJBox.getSelectedItem() != null) {
+                    // Sets Prerequisite Tasks combo box to the Task IDs associated with the selected Project ID (task dependency must be on existing task)
+                    prerequisiteTasksJBox.setModel(new DefaultComboBoxModel(handler.listTasksForTasks(assignProjectsJBox.getSelectedItem().toString())));
+                }
                 SelectedPrerequisiteF.setText("Selected prerequisite tasks appear here:");
 
                 // Resizes and centers current window by re-packing it

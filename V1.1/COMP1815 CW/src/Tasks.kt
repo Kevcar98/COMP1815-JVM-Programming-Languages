@@ -2,7 +2,7 @@ import java.io.*
 
 
 data class Tasks(
-        var TaskID: Int = 0,
+        var TaskID: Int = 1,
         var ProjectID: Int = 0,
         var Commissioner: String = "",
         var ProjectMng: String = "",
@@ -25,7 +25,7 @@ class TaskHandler() {
     ): List<Tasks> {
         task.add(
                 Tasks(
-                        TaskID = if (TaskID.isEmpty()) 0 else TaskID.toInt(),
+                        TaskID = if (TaskID.isEmpty()) 1 else TaskID.toInt(),
                         ProjectID = if (ProjectID.isEmpty()) 0 else ProjectID.toInt(),
                         Commissioner = if (Commissioner.isEmpty()) "Unknown Commissioner" else Commissioner,
                         ProjectMng = if (ProjectMng.isEmpty()) "Unknown Project Manager" else ProjectMng,
@@ -62,6 +62,7 @@ class TaskHandler() {
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Task, input their respective Task Parameters into Array via split()
                 }
+
                 for (i in parts.indices) {
                     createTask(
                             allParts[i][0],
@@ -111,7 +112,7 @@ class TaskHandler() {
                 if (ID == "") emptyInput = true
                 for (i in parts.indices) {
                     for (j in allParts[i].indices) {
-                        if (allParts[i][0] == ID || (emptyInput && allParts[i][0] == "0")) { // if TaskIDF text field is empty, TaskID is 0 so check if it exists
+                        if (allParts[i][0] == ID || (emptyInput && allParts[i][0] == "1")) { // if TaskIDF text field is empty, TaskID is 1 so check if it exists
                             println("Error: ID is not unique!")
                             br.close()
                             return false
@@ -182,9 +183,9 @@ class TaskHandler() {
                     save(task) // Saves newly created task from array of tasks (now using the task with the modified Progress) to emptied Tasks.txt file
                     task.clear() // Clears mutable list of tasks to avoid saving the entire list of tasks each loop through the array
                 }
+                br.close()
+                return true
             }
-            br.close()
-            return true
         } catch (e: FileNotFoundException) {
             println("Error: File Not Found")
         } catch (e: IOException) {
@@ -248,9 +249,9 @@ class TaskHandler() {
                     save(task) // Saves newly created task from array of tasks (now using the task with the modified Duration) to emptied Tasks.txt file
                     task.clear() // Clears mutable list of tasks to avoid saving the entire list of tasks each loop through the array
                 }
+                br.close()
+                return true
             }
-            br.close()
-            return true
         } catch (e: FileNotFoundException) {
             println("Error: File Not Found")
         } catch (e: IOException) {
@@ -274,9 +275,12 @@ class TaskHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
@@ -294,7 +298,7 @@ class TaskHandler() {
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return Array<String>(0) { "" } // return empty array if file empty
+        return Array<String>(0) { "" } // Returns empty array if file empty
     }
 
     fun listTeamsForTask(teamsInProject: Array<String>): Array<String> {
@@ -326,8 +330,8 @@ class TaskHandler() {
                             matchingIDs += allParts[i][0] + ","
                         }
                     }
-                } // loops through all created teams, loops through teamsInProject, if a match is found, add it to a string (to be returned as an array later)
-                val array = matchingIDs.substring(0, matchingIDs.length - 1).split(",").toTypedArray() // remove comma
+                } // Loops through all created teams, loops through teamsInProject, if a match is found, add it to a string (to be returned as an array later)
+                val array = matchingIDs.substring(0, matchingIDs.length - 1).split(",").toTypedArray() // Removes comma
                 br.close()
                 return array
             }
@@ -336,7 +340,7 @@ class TaskHandler() {
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return Array<String>(0) { "" } // return empty array if file empty
+        return Array<String>(0) { "" } // Returns empty array if file empty
     }
 
     fun teamsAssignedToProject(projectID: String): Array<String> {
@@ -352,9 +356,12 @@ class TaskHandler() {
                 fileLines = fileLines.replace(" ProjectMng=", "")
                 fileLines = fileLines.replace(" AssignedTasksID=", "")
                 fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" StartDate=", "")
+                fileLines = fileLines.replace(" FinishDate=", "")
+                fileLines = fileLines.replace(" TotalDuration=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Projects via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(8) { "" } } // Make 3D Array with dimensions: Projects vs. Project Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Project, input their respective Project Parameters into Array via split()
                 }
@@ -376,10 +383,10 @@ class TaskHandler() {
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return Array<String>(0) { "" } // return empty array if file empty
+        return Array<String>(0) { "" } // Returns empty array if file empty
     }
 
-    fun listTasksForTasks(): Array<String> {
+    fun listTasksForTasks(projectID: String): Array<String> {
         try {
             val fr = FileReader("Tasks.txt")
             val br = BufferedReader(fr)
@@ -401,19 +408,27 @@ class TaskHandler() {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Task, input their respective Task Parameters into Array via split()
                 }
 
-                // Loads Tasks from File, then this block returns an array of Task IDs
-                var array = Array<String>(parts.size) { "" }
+                // Loads Tasks from File, then this block returns an array of Task IDs according to the matching Project ID
+                var matchingIDs = ""
                 for (i in parts.indices) {
-                    array[i] = allParts[i][0]
-                }
-                br.close()
-                return array
+                    if (allParts[i][1] == projectID) {
+                        matchingIDs += allParts[i][0] + ","
+                    }
+                } // Loops through all created tasks, if a match is found, add it to a string (to be returned as an array later)
+                if (!matchingIDs.isEmpty()) {
+                    val array = matchingIDs.substring(0, matchingIDs.length - 1).split(",").toTypedArray() // Removes comma
+                    br.close()
+                    return array
+                } else {
+                    br.close()
+                    return Array<String>(0) { "" } // Returns empty array if none found
+                } // Checks if no matching Task ID was found from the given Project ID, so that split() is not used on empty string
             }
         } catch (e: FileNotFoundException) {
             println("Error: File Not Found")
         } catch (e: IOException) {
             println("Error: IO Exception")
         }
-        return Array<String>(0) { "" } // return empty array if file empty
+        return Array<String>(0) { "" } // Returns empty array if file empty
     }
 }
