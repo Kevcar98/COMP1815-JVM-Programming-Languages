@@ -431,4 +431,63 @@ class TaskHandler() {
         }
         return Array<String>(0) { "" } // Returns empty array if file empty
     }
+
+    fun TasksDurationForID(ID: String): Int {
+        var Duration = 0
+        try {
+            val fr = FileReader("Tasks.txt")
+            val br = BufferedReader(fr)
+            var fileLines: String
+            while (br.ready()) {
+                fileLines = br.readLine()
+                fileLines = fileLines.replace("Tasks(", "") // Formatting the read input from Tasks.txt to parse data into Arrays
+                fileLines = fileLines.replace("TaskID=", "")
+                fileLines = fileLines.replace(" ProjectID=", "")
+                fileLines = fileLines.replace(" Commissioner=", "")
+                fileLines = fileLines.replace(" ProjectMng=", "")
+                fileLines = fileLines.replace(" Duration=", "")
+                fileLines = fileLines.replace(" AssignedTeamsID=", "")
+                fileLines = fileLines.replace(" Progress=", "")
+                fileLines = fileLines.replace(")", "")
+                val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Tasks via split()
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(7) { "" } } // Make 3D Array with dimensions: Tasks vs. Tasks Parameters (ID, etc)
+
+                for (i in parts.indices) {
+                    allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Task, input their respective Task Parameters into Array via split()
+                }
+
+                // Loads Tasks from File, then this block returns an array of Task IDs according to the matching Project ID
+
+
+                for(k in ID.indices){
+                    println("ID["+k+"]= "+ID[k])
+                }
+
+
+                for(j in ID.indices) {
+                    for (i in parts.indices) {
+                        //println("i= " + i)
+
+                        if (allParts[i][0] == ID) {
+                            println("Duration of "+j+" task " + allParts[j][4])
+                            Duration = allParts[i][4].toInt()
+                        }
+                    } // Loops through all created tasks, if a match is found, add it to a string (to be returned as an array later)
+                    // Checks if no matching Task ID was found from the given Project ID, so that split() is not used on empty string
+
+                }
+
+
+
+
+            }
+        } catch (e: FileNotFoundException) {
+            println("Error: File Not Found")
+        } catch (e: IOException) {
+            println("Error: IO Exception")
+        }
+        return Duration
+    }
 }
+
+

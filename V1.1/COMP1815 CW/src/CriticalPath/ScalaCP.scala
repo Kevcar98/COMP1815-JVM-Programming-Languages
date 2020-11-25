@@ -7,7 +7,7 @@ import scala.collection.mutable.{HashMap, HashSet, Set}
 import scala.io.Source
 
 class ScalaCP {
-  def main(Preq: Array[String], NPreq: Array[String]): Unit = {
+  def main(Preq: Array[String], NPreq: Array[String]): (Unit, (Int, List[Int])) = {
     // Case class means there is no need to put new to instantiate the class (new DAG -> DAG)
     case class DAG[T](root: T) extends HashMap[T, Set[T]] {
 
@@ -95,5 +95,8 @@ class ScalaCP {
 
     Project.TheLargestBranch(0)
     Project.PrintTree(0)
+    val arrayP: (Int, List[Int]) =Project.TheLargestBranch(0)//contains the size of the critical path as well as the nodes
+    var LPath = Project.PrintTree(0)
+    (LPath, arrayP)
   }
 }
