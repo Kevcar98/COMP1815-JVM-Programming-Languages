@@ -31,7 +31,7 @@ class TaskHandler() {
                         ProjectMng = if (ProjectMng.isEmpty()) "Unknown Project Manager" else ProjectMng,
                         Duration = if (Duration.isEmpty()) 0 else Duration.toInt(),
                         AssignedTeamsID = if (AssignedTeamsID.isEmpty()) 0 else AssignedTeamsID.toInt(),
-                        Progress = if (Progress.isEmpty()) 0 else Progress.toInt(),
+                        Progress = if (Progress.isEmpty()) 0 else Progress.toInt()
                 )
         )
         return task
@@ -309,9 +309,10 @@ class TaskHandler() {
                 fileLines = fileLines.replace(" TeamLeader=", "")
                 fileLines = fileLines.replace(" TeamMembers=", "")
                 fileLines = fileLines.replace(" TeamLoc=", "")
+                fileLines = fileLines.replace(" TeamCost=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
                 }
@@ -319,7 +320,6 @@ class TaskHandler() {
                 // Loads Teams from File, then this block checks for matching Team IDs in the selected Project
                 // by the teamsAssignedToProject() function, before returning them
                 var matchingIDs = ""
-                //var teamsInProject = teamsAssignedToProject(project) // e.g. teamsInProject = [2, 4, 6]
                 for (i in parts.indices) {
                     for (j in teamsInProject.indices) {
                         if (teamsInProject[j] == allParts[i][0]) {

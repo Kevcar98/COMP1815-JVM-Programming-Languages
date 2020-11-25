@@ -115,9 +115,10 @@ class ProjectHandler() {
                 fileLines = fileLines.replace(" TeamLeader=", "")
                 fileLines = fileLines.replace(" TeamMembers=", "")
                 fileLines = fileLines.replace(" TeamLoc=", "")
+                fileLines = fileLines.replace(" TeamCost=", "")
                 fileLines = fileLines.replace(")", "")
                 val parts: Array<String> = fileLines.substring(1, fileLines.length - 1).split("\\]\\[".toRegex()).toTypedArray() // Creates Array of Teams via split()
-                val allParts = Array<Array<String>>(parts.size) { Array<String>(4) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
+                val allParts = Array<Array<String>>(parts.size) { Array<String>(5) { "" } } // Make 3D Array with dimensions: Teams vs. Teams Parameters (ID, etc)
                 for (i in parts.indices) {
                     allParts[i] = parts[i].split(",".toRegex()).toTypedArray() // For each Team, input their respective Team Parameters into Array via split()
                 }
@@ -201,6 +202,7 @@ class ProjectHandler() {
             // println("Warning: Array Index Out of Bounds Exception")
         }
     }
+
     fun retrieveAssignedTasksID(inputProject: String): String {
         try {
             val fr = FileReader("Projects.txt")
@@ -239,7 +241,4 @@ class ProjectHandler() {
         }
         return "" // return empty string if project empty
     }
-
-
-
 }
